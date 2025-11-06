@@ -23,7 +23,6 @@ class Autor(models.Model):
 class Autoria(models.Model):
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE, related_name='autoria')
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='autoria')
-    escrito_por = models.DateTimeField(auto_now_add=True) # Auto-definido na criação
 
     class Meta:
         unique_together = ('livro', 'autor') # Previne duplicatas
@@ -35,5 +34,5 @@ class Usuario(models.Model):
 
 #Relação Reserva: many-to-one (Um usuario pode ter várias reservas, uma reserva pode ser de apenas um usuario)
 class Reserva(models.Model):
-    usuario  = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    exemplar = models.ForeignKey(Exemplar, on_delete=models.CASCADE)
+    usuario  = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='reserva')
+    exemplar = models.ForeignKey(Exemplar, on_delete=models.CASCADE, related_name='reserva')
