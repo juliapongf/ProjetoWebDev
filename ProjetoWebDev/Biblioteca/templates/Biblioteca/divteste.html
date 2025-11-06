@@ -1,0 +1,7 @@
+    <ul>
+        {% for livro in livros %}
+            <li>{{ livro.titulo }}</li>
+        {% empty %}
+            <li>Nenhum livro.</li>
+        {% endfor %}
+    </ul>

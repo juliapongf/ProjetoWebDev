@@ -12,22 +12,32 @@
 
     <h1>Adicionar ao Acervo</h1>
         <h2>Obra</h2>
+
             <form
-                hx-post="{% url ’funcao que cria um objeto LIVRO’ %}"
-                hx-target="#element on the page that will receive the HTML response from an AJAX request"
-                hx-swap="beforeend"
+                action="{% url 'criar_livro' %}"
+                method="post"
+                hx-post="{% url 'criar_livro' %}"
+                hx-target="#div_teste"
+                hx-swap="innerHTML"
             >
+                {% csrf_token %}
                 Título:  <input type="text"              name="titulo">              <br>
                 Autor:   <input type="text"              name="autor">               <br>
+                Gênero:  <input type="text"              name="genero">              <br>
                 Ano:     <input type="text"              name="ano">                 <br>
                 Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
 
                 <input type="submit" value="Adicionar">
             </form>
 
+    <div id="div_teste">
+        Nada criado
+    </div>
+        
+    {% comment %}
         <h2>Exemplar</h2>
             <form
-                hx-post="{% url ’funcao que cria um objeto EXEMPLAR %}"
+                hx-post="{% url 'funcao que cria um objeto EXEMPLAR' %}"
                 hx-target="#element on the page that will receive the HTML response from an AJAX request"
                 hx-swap="beforeend"
             >
@@ -39,7 +49,7 @@
     <h1>Remover do Acervo</h1>
         <h2>Obra</h2>
             <form
-                hx-delete="{% url ’funcao que remove um objeto LIVRO’ %}"
+                hx-delete="{% url 'funcao que remove um objeto LIVRO' %}"
                 hx-target="#element on the page that will receive the HTML response from an AJAX request"
                 hx-swap="beforeend"
             >
@@ -50,7 +60,7 @@
 
         <h2>Exemplar</h2>
             <form
-                hx-delete="{% url ’funcao que remove um objeto EXEMPLAR %}"
+                hx-delete="{% url 'funcao que remove um objeto EXEMPLAR' %}"
                 hx-target="#element on the page that will receive the HTML response from an AJAX request"
                 hx-swap="beforeend"
             >
@@ -58,6 +68,8 @@
 
                 <input type="submit" value="Remover">
             </form>
+    
+    {% endcomment %}
 
 </body>
 
