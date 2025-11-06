@@ -4,5 +4,6 @@ from django.http import HttpResponse
 # Crie suas views aqui.
 
 def index(request):
-    return HttpResponse("Oi Usuário!")
+    return render(request, "Biblioteca/pesquisa.html")
+
 

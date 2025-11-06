@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca</title>
+    <style>
+        #cabecalho {
+            text-align: center;
+            border: 3px solid black;
+            font-size: 40px;
+        }
+
+        .caixa {
+            border: 3px solid black;
+        }
+
+    </style>
+</head>
+<body>
+<div id="cabecalho">
+    <h1>📚 Biblioteca 📖</h1>
+</div>
+<div id="principal">
+    <div id="pesquisa">
+        <h2>Pesquisar livro ou autor</h2>
+        <form>
+            <input type="text" placeholder="Faça sua pesquisa" name="pesquisa">
+            <input type="submit" value="Pesquisar">
+            <br>
+            <input type="radio" name="tipodapesquisa" value="livro"> Livro
+            <input type="radio" name="tipodapesquisa" value="autor"> Autor
+        </form>
+    </div>
+    <br>
+
+    <div class="caixa" id="resultados">
+        <h2>Resultados</h2>
+        jsdhfkjsdhf
+    </div>
+    <br>
+    <div class="caixa" id="reservas">
+        <h2>Reservar e devolver livros</h2>
+        <h3>Reservar livros</h3>
+        <form>
+            Nome: <input type="text" placeholder="Digite seu nome completo" name="nome"><br>
+            Email: <input type="email" placeholder="Digite seu email" name="email"><br>
+            Id do exemplar: <input type="number" placeholder="Digite o id do exemplar" name="id_exemplar"><br>
+        </form>
+        <h3>Devolver livros</h3>
+        <form>
+            Nome: <input type="text" placeholder="Digite seu nome completo" name="nome"><br>
+            Email: <input type="email" placeholder="Digite seu email" name="email"><br>
+            Id do exemplar: <input type="number" placeholder="Digite o id do exemplar" name="id_exemplar"><br><br>
+        </form><br><br>
+
+    </div>
+
+    
+</div>
+    
+</body>
+</html>
