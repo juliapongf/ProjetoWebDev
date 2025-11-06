@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Acervo</title>
+</head>
+
+<body>
+
+    <h1>Adicionar ao Acervo</h1>
+        <h2>Obra</h2>
+            <form
+                hx-post="{% url ’funcao que cria um objeto LIVRO’ %}"
+                hx-target="#element on the page that will receive the HTML response from an AJAX request"
+                hx-swap="beforeend"
+            >
+                Título:  <input type="text"              name="titulo">              <br>
+                Autor:   <input type="text"              name="autor">               <br>
+                Ano:     <input type="text"              name="ano">                 <br>
+                Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
+
+                <input type="submit" value="Adicionar">
+            </form>
+
+        <h2>Exemplar</h2>
+            <form
+                hx-post="{% url ’funcao que cria um objeto EXEMPLAR %}"
+                hx-target="#element on the page that will receive the HTML response from an AJAX request"
+                hx-swap="beforeend"
+            >
+                Título:  <input type="text" name="titulo">
+
+                <input type="submit" value="Adicionar">
+            </form>
+        
+    <h1>Remover do Acervo</h1>
+        <h2>Obra</h2>
+            <form
+                hx-delete="{% url ’funcao que remove um objeto LIVRO’ %}"
+                hx-target="#element on the page that will receive the HTML response from an AJAX request"
+                hx-swap="beforeend"
+            >
+                Título:  <input type="text" name="titulo">
+
+                <input type="submit" value="Remover">
+            </form>
+
+        <h2>Exemplar</h2>
+            <form
+                hx-delete="{% url ’funcao que remove um objeto EXEMPLAR %}"
+                hx-target="#element on the page that will receive the HTML response from an AJAX request"
+                hx-swap="beforeend"
+            >
+                ID do Exemplar:  <input type="text" name="id_exemplar">
+
+                <input type="submit" value="Remover">
+            </form>
+
+</body>
+
+</html>
