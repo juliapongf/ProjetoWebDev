@@ -1,0 +1,11 @@
+<div>
+<h2>Resultados</h2>
+<ul>
+{% for livro in livros %}
+        
+    <li>{{ livro.titulo }}</li>
+{% empty %}
+    <li>Nenhum livro encontrado</li>
+{% endfor %}
+</ul>
+</div>

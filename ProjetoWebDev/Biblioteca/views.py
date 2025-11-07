@@ -22,3 +22,20 @@ def criar_livro(request):
         return render(request, "Biblioteca/divteste.html", {"livros": livros})
 
     return HttpResponse("NADA FOI CRIADO.")
+
+def pesquisa(request):
+    livros = Livro.objects.all()
+    return render(request, "Biblioteca/pesquisa.html", {"livros": livros})
+
+
+def pesquisa_livros(request):
+    busca = request.GET.get('busca', '')
+    print(f"Valor da busca: {busca}")
+    if busca:
+        livros = Livro.objects.filter(titulo__icontains=busca)
+    else:
+        livros = Livro.objects.all()
+
+    return render(request, "Biblioteca/parcial_resultados.html", {
+        "livros": livros
+    })

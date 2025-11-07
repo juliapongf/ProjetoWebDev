@@ -18,25 +18,29 @@
     </style>
 </head>
 <body>
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 <div id="cabecalho">
     <h1>📚 Biblioteca 📖</h1>
 </div>
 <div id="principal">
     <div id="pesquisa">
         <h2>Pesquisar livro ou autor</h2>
-        <form>
-            <input type="text" placeholder="Faça sua pesquisa" name="pesquisa">
-            <input type="submit" value="Pesquisar">
+        <form method="GET"
+            hx-get="{% url 'pesquisa_livro' %}"
+            hx-target="#resultados"
+            hx-swap="outerHTML"
+            hx-trigger="submit"
+            >
+            <input type="text" placeholder="Faça sua pesquisa" name="busca">
+            <button type="submit">Pesquisar</button>
             <br>
-            <input type="radio" name="tipodapesquisa" value="livro"> Livro
-            <input type="radio" name="tipodapesquisa" value="autor"> Autor
+            {# <input type="radio" name="tipodapesquisa" value="livro"> Livro #}
+            {# <input type="radio" name="tipodapesquisa" value="autor"> Autor #}
         </form>
     </div>
     <br>
 
     <div class="caixa" id="resultados">
-        <h2>Resultados</h2>
-        jsdhfkjsdhf
     </div>
     <br>
     <div class="caixa" id="reservas">
