@@ -19,7 +19,6 @@ def criar_livro(request):
         livro = Livro(titulo=titulo, genero=genero, sinopse=sinopse, ano_de_publicacao=ano, exemplares_disponiveis=0)
         livro.save()
         livros = Livro.objects.all()
-        print(livros)
         return render(request, "Biblioteca/divteste.html", {"livros": livros})
 
     return HttpResponse("NADA FOI CRIADO.")

@@ -9,13 +9,13 @@
 </head>
 
 <body>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 
     <h1>Adicionar ao Acervo</h1>
         <h2>Obra</h2>
 
             <form
-                action="{% url 'criar_livro' %}"
-                method="post"
+                method="POST"
                 hx-post="{% url 'criar_livro' %}"
                 hx-target="#div_teste"
                 hx-swap="innerHTML"
@@ -31,7 +31,7 @@
             </form>
 
     <div id="div_teste">
-        Nada criado
+
     </div>
         
     {% comment %}
