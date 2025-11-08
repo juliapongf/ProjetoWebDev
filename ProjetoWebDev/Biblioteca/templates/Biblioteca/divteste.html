@@ -1,7 +1,15 @@
 <div>
+    <h3>livros</h3>
     {% for livro in livros %}
         <p>{{ livro.titulo }}</p>
     {% empty %}
         <p>Sem livros cadastrados.</p>
+    {% endfor %}
+
+    <h3>autores</h3>
+    {% for autor in autores %}
+        <p>{{ autor.nome }}</p>
+    {% empty %}
+        <p>Sem autores cadastrados.</p>
     {% endfor %}
 </div>

@@ -18,11 +18,15 @@ def criar_livro(request):
         genero = request.POST.get("genero")
         sinopse = request.POST.get("sinopse")
         ano = request.POST.get("ano")
+        biografia = request.POST.get("biografia")
 
         livro = Livro(titulo=titulo, genero=genero, sinopse=sinopse, ano_de_publicacao=ano, exemplares_disponiveis=0)
         livro.save()
+        autor = Autor(nome=autor, biografia=biografia)
+        autor.save()
         livros = Livro.objects.all()
-        return render(request, "Biblioteca/divteste.html", {"livros": livros})
+        autores = Autor.objects.all()
+        return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores})
 
     return HttpResponse("NADA FOI CRIADO.")
 
