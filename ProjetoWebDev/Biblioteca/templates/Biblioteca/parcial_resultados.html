@@ -7,6 +7,14 @@
     <div class="caixinha">
         <ul>
             <li>Título: {{ elemento.titulo }}</li>
+            <li>Autor(es):
+                <ul>
+                    {% for autoria in elemento.autoria.all %}
+                        <li>{{ autoria.autor.nome }}</li>
+                    {% empty %}
+                        <li>Sem autores cadastrados</li>
+                    {% endfor %}
+                </ul>
             <li>Ano de publicação: {{ elemento.ano_de_publicacao }}</li>
             <li>Gênero: {{ elemento.genero }}</li>
             <li>Número de exemplares disponíveis: {{ elemento.exemplares_disponiveis }}</li>
@@ -19,12 +27,29 @@
             Nenhum livro encontrado
     {% endfor %}
 {% else %}
-    {% for elemento in lista %}
-        
-        {{ elemento.nome }}
-        {% empty %}
-            Nenhum autor encontrado
-    {% endfor %}
+
+{% for elemento in lista %}
+
+    <div class="caixinha">
+        <ul>
+            <li>Nome: {{ elemento.nome }}</li>
+            <li>Livro(s):
+            <ul>
+                {% for autoria in elemento.autoria.all %}
+                    <li>{{ autoria.livro.titulo }}</li>
+                {% empty %}
+                    <li>Sem livros cadastrados</li>
+                {% endfor %}
+            </ul>
+        <li>Biografia: {{ elemento.biografia }}</li>
+    </ul>
+</div>
+<br><br>
+    
+    {% empty %}
+        Nenhum autor encontrado
+{% endfor %}
+
 {% endif %}
 
 

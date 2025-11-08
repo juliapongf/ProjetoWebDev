@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Livro, Autor
+from .models import Livro, Autor, Autoria
 
 # Crie suas views aqui.
 
@@ -26,7 +26,10 @@ def criar_livro(request):
         autor.save()
         livros = Livro.objects.all()
         autores = Autor.objects.all()
-        return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores})
+        autoria = Autoria(livro=livro, autor=autor)
+        autoria.save()
+        autorias = Autoria.objects.all()
+        return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
 
     return HttpResponse("NADA FOI CRIADO.")
 

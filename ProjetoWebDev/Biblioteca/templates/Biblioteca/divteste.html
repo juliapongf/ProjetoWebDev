@@ -12,4 +12,11 @@
     {% empty %}
         <p>Sem autores cadastrados.</p>
     {% endfor %}
+
+    <h3>autorias</h3>
+    {% for autoria in autorias %}
+        <p>{{ autoria.autor.nome }} é autor de {{ autoria.livro.titulo }}</p>
+    {% empty %}
+        <p>Sem autorias cadastradas.</p>
+    {% endfor %}
 </div>
