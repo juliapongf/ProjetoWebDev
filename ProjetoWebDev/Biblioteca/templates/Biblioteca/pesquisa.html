@@ -15,6 +15,15 @@
             border: 3px solid black;
         }
 
+        .caixinha {
+            border: 3px solid black;
+            width: 80%;
+        }
+        #resultados {
+            display: flex;
+            justify-content: center; /* centraliza horizontalmente */
+        }
+
     </style>
 </head>
 <body>
@@ -28,14 +37,14 @@
         <form method="GET"
             hx-get="{% url 'pesquisa_livro' %}"
             hx-target="#resultados"
-            hx-swap="outerHTML"
+            hx-swap="innerHTML"
             hx-trigger="submit"
             >
             <input type="text" placeholder="Faça sua pesquisa" name="busca">
             <button type="submit">Pesquisar</button>
             <br>
-            {# <input type="radio" name="tipodapesquisa" value="livro"> Livro #}
-            {# <input type="radio" name="tipodapesquisa" value="autor"> Autor #}
+            <input type="radio" name="tipodapesquisa" value="livro" checked> Livro
+            <input type="radio" name="tipodapesquisa" value="autor"> Autor
         </form>
     </div>
     <br>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Livro
+from .models import Livro, Autor
 
 # Crie suas views aqui.
 
@@ -30,12 +30,16 @@ def pesquisa(request):
 
 def pesquisa_livros(request):
     busca = request.GET.get('busca', '')
+    tipo = request.GET.get('tipodapesquisa', 'livro')
+    
     print(f"Valor da busca: {busca}")
-    if busca:
-        livros = Livro.objects.filter(titulo__icontains=busca)
+    if tipo == "livro":
+        lista = Livro.objects.filter(titulo__icontains=busca)
+    elif tipo == "autor":
+        lista = Autor.objects.filter(nome__icontains=busca)
     else:
-        livros = Livro.objects.all()
+        lista = []
 
     return render(request, "Biblioteca/parcial_resultados.html", {
-        "livros": livros
+        "lista": lista, "tipo": tipo
     })

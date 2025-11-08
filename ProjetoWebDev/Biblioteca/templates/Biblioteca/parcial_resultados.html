@@ -1,11 +1,31 @@
 <div>
 <h2>Resultados</h2>
-<ul>
-{% for livro in livros %}
+
+{% if tipo == "livro" %}
+    {% for elemento in lista %}
+
+    <div class="caixinha">
+        <ul>
+            <li>Título: {{ elemento.titulo }}</li>
+            <li>Ano de publicação: {{ elemento.ano_de_publicacao }}</li>
+            <li>Gênero: {{ elemento.genero }}</li>
+            <li>Número de exemplares disponíveis: {{ elemento.exemplares_disponiveis }}</li>
+            <li>Sinopse: {{ elemento.sinopse }}</li>
+        </ul>
+    </div>
+    <br><br>
         
-    <li>{{ livro.titulo }}</li>
-{% empty %}
-    <li>Nenhum livro encontrado</li>
-{% endfor %}
-</ul>
+        {% empty %}
+            Nenhum livro encontrado
+    {% endfor %}
+{% else %}
+    {% for elemento in lista %}
+        
+        {{ elemento.nome }}
+        {% empty %}
+            Nenhum autor encontrado
+    {% endfor %}
+{% endif %}
+
+
 </div>
