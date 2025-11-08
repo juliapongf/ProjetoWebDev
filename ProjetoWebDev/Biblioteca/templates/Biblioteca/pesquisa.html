@@ -18,10 +18,13 @@
         .caixinha {
             border: 3px solid black;
             width: 80%;
+            text-align: left;
         }
         #resultados {
             display: flex;
-            justify-content: center; /* centraliza horizontalmente */
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
         }
 
     </style>
@@ -35,7 +38,7 @@
     <div id="pesquisa">
         <h2>Pesquisar livro ou autor</h2>
         <form method="GET"
-            hx-get="{% url 'pesquisa_livro' %}"
+            hx-get="{% url 'pesquisar' %}"
             hx-target="#resultados"
             hx-swap="innerHTML"
             hx-trigger="submit"

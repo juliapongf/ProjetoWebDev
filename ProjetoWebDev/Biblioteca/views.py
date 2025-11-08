@@ -5,6 +5,9 @@ from .models import Livro, Autor
 # Crie suas views aqui.
 
 def index(request):
+    return render(request, "Biblioteca/index.html")
+
+def gerenciar(request):
     livros = Livro.objects.all()
     return render(request, "Biblioteca/gerenciamento.html", {"livros": livros})
 
@@ -28,7 +31,7 @@ def pesquisa(request):
     return render(request, "Biblioteca/pesquisa.html", {"livros": livros})
 
 
-def pesquisa_livros(request):
+def pesquisar(request):
     busca = request.GET.get('busca', '')
     tipo = request.GET.get('tipodapesquisa', 'livro')
     
