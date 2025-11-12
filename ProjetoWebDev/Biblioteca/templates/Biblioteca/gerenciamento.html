@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+    {% csrf_token %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Acervo</title>
@@ -10,6 +11,15 @@
 
 <body>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <script>
+    document.body.addEventListener('htmx:configRequest', function(event) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        if (csrfToken) {
+        event.detail.headers['X-CSRFToken'] = csrfToken;
+        }
+    });
+    </script>
 
     <h1>Adicionar ao Acervo</h1>
         <h2>Obra</h2>
@@ -37,42 +47,62 @@
 
     </div>
         
-    {% comment %}
-        <h2>Exemplar</h2>
+    <h2>Exemplar</h2>
+
             <form
-                hx-post="{% url 'funcao que cria um objeto EXEMPLAR' %}"
-                hx-target="#element on the page that will receive the HTML response from an AJAX request"
-                hx-swap="beforeend"
+                method="POST"
+                hx-post="{% url 'criar_exemplar' %}"
+                hx-target="#div_exemplares"
+                hx-swap="innerHTML"
             >
+                {% csrf_token %}
                 Título:  <input type="text" name="titulo">
 
                 <input type="submit" value="Adicionar">
             </form>
-        
+
+    <div id="div_exemplares">
+
+    </div>
+
+
     <h1>Remover do Acervo</h1>
         <h2>Obra</h2>
+
             <form
-                hx-delete="{% url 'funcao que remove um objeto LIVRO' %}"
-                hx-target="#element on the page that will receive the HTML response from an AJAX request"
-                hx-swap="beforeend"
+                method="POST"
+                hx-delete="{% url 'remover_livro' %}"
+                hx-target="#div_remover_livros"
+                hx-swap="innerHTML"
             >
+                {% csrf_token %}
                 Título:  <input type="text" name="titulo">
 
                 <input type="submit" value="Remover">
             </form>
 
+    <div id="div_remover_livros">
+
+    </div>
+    
+
+    
         <h2>Exemplar</h2>
             <form
-                hx-delete="{% url 'funcao que remove um objeto EXEMPLAR' %}"
-                hx-target="#element on the page that will receive the HTML response from an AJAX request"
-                hx-swap="beforeend"
+                method="POST"
+                hx-delete="{% url 'remover_exemplar' %}"
+                hx-target="#div_remover_exemplares"
+                hx-swap="innerHTML"
             >
+                {% csrf_token %}
                 ID do Exemplar:  <input type="text" name="id_exemplar">
 
                 <input type="submit" value="Remover">
             </form>
     
-    {% endcomment %}
+    <div id="div_remover_exemplares">
+
+    </div>
 
 </body>
 

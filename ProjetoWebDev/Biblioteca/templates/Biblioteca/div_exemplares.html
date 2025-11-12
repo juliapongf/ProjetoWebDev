@@ -1,0 +1,8 @@
+<div>
+    <h3>exemplares</h3>
+    {% for exemplar in exemplares %}
+        <p>{{ exemplar.livro.titulo }} {{ exemplar.id }}</p>
+    {% empty %}
+        <p>Sem exemplares cadastrados.</p>
+    {% endfor %}
+</div>

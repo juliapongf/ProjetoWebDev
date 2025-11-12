@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Livro, Autor, Autoria
+from .models import Livro, Autor, Autoria, Exemplar
+from urllib.parse import parse_qs
 
 # Crie suas views aqui.
 
@@ -48,6 +49,65 @@ def criar_livro(request):
         return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
 
     return HttpResponse("NADA FOI CRIADO.")
+
+def criar_exemplar(request):
+    if request.method == "POST":
+        livro = Livro.objects.get(titulo__icontains=request.POST.get("titulo"))
+        exemplar = Exemplar(livro=livro, disponivel=True)
+        livro.exemplares_disponiveis += 1
+        livro.save()
+        exemplar.save()
+        exemplares = Exemplar.objects.all()
+        return render(request, "Biblioteca/div_exemplares.html", {"exemplares": exemplares})
+
+    return HttpResponse("NADA FOI CRIADO.")
+
+def remover_livro(request):
+    if request.method == "DELETE":
+        try:
+            data = request.body.decode("utf-8")
+            parsed = parse_qs(data)
+            titulo = parsed.get("titulo", [None])[0]
+
+            if not titulo:
+                return HttpResponse("Título não informado", status=400)
+
+            livro = Livro.objects.get(titulo__icontains=titulo)
+            livro.delete()
+
+            return render(request, "Biblioteca/div_remover_livros.html", {'removeu': True, 'livro': livro})
+
+        except Livro.DoesNotExist:
+            return HttpResponse("Livro não encontrado", status=404)
+    else:
+        return HttpResponse("Método inválido", status=405)
+
+def remover_exemplar(request):
+    if request.method == "DELETE":
+        try:
+            data = request.body.decode("utf-8")
+            parsed = parse_qs(data)
+            id_exemplar = parsed.get("id_exemplar", [None])[0]
+
+            if not id_exemplar:
+                return HttpResponse("ID não informado", status=400)
+
+            exemplar = Exemplar.objects.get(id=id_exemplar)
+
+            livro = exemplar.livro
+                    
+            livro.exemplares_disponiveis -= 1
+
+            livro.save()
+
+            exemplar.delete()
+
+            return render(request, "Biblioteca/div_remover_exemplares.html", {'removeu': True, 'exemplar': exemplar})
+
+        except Exemplar.DoesNotExist:
+            return HttpResponse("Exemplar não encontrado", status=404)
+
+    return HttpResponse("Método inválido", status=405)
 
 def pesquisa(request):
     livros = Livro.objects.all()
