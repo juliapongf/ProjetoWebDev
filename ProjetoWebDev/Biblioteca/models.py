@@ -11,7 +11,7 @@ class Livro (models.Model):
 
 #Relação Exemplar: many-to-one (Um livro pode ter vários exemplares, um exemplar pode ser de apenas um livro)
 class Exemplar(models.Model):
-    livro = models.ForeignKey(Livro,on_delete=models.CASCADE, related_name="exempĺares")
+    livro = models.ForeignKey(Livro,on_delete=models.CASCADE, related_name="exemplares")
     disponivel = models.BooleanField(default=True)
 
 class Autor(models.Model):

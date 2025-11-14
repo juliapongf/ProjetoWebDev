@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% csrf_token %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca</title>
@@ -74,7 +75,15 @@
     </style>
 </head>
 <body>
-<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+    document.body.addEventListener('htmx:configRequest', function(event) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        if (csrfToken) {
+        event.detail.headers['X-CSRFToken'] = csrfToken;
+        }
+    });
+    </script>
 
 <header>
 
@@ -140,12 +149,32 @@
     
         <div id="msg-area"></div>
         <h3>Devolver livros</h3>
-        <form>
-            Nome completo: <input type="text" name="nome"><br>
-            Email: <input type="email" name="email"><br>
-            Id do exemplar: <input type="number" name="id_exemplar"><br>
-            <input type="submit" value="Reservar">
-        </form><br><br>
+         <form id="form-reserva"
+            method="POST"
+            hx-delete="{% url 'remover_reserva' %}"
+            hx-target="#msg-area-devolucao"
+            hx-swap="innerHTML"
+            >
+            {% csrf_token %}
+            <div class="form-field" >
+                <label for="nome_completo">Nome completo:</label>     
+                <input type="text" name="nome"><br>
+            </div>
+
+            <div class="form-field">
+                <label for="email">Email:</label>
+                <input type="email" name="email"><br>
+            </div>
+            <div class="form-field">
+                <label for="id_exemplar">Id do exemplar: </label>
+                <input type="number"  min="0" name="exemplar_id"><br>
+            </div>
+             <div class="form-field" class = "form-reserva">
+                <input type="submit" value="Devolver"><br>
+             </div>   
+        </form>
+        <div id="msg-area-devolucao"></div>
+        <br><br>
 
     </div>
 

@@ -235,3 +235,40 @@ def criar_reserva(request):
                 "mensagem": "Reserva criada com sucesso!"
             })
     return HttpResponse("nada foi criado")
+
+def remover_reserva(request):
+    if request.method == "DELETE":
+        try:
+            # HTMX envia o corpo como querystring
+            data = request.body.decode("utf-8")
+            parsed = parse_qs(data)
+
+            exemplar_id = parsed.get("exemplar_id", [None])[0]
+
+            if not exemplar_id:
+                return HttpResponse("ID do exemplar não informado", status=400)
+
+            # Pega o exemplar
+            exemplar = Exemplar.objects.get(id=exemplar_id)
+
+            # Verifica se ele tem reserva
+            reserva = Reserva.objects.get(exemplar=exemplar)
+
+            # Remove a reserva
+            reserva.delete()
+
+            # Marca exemplar como disponível novamente
+            exemplar.disponivel = True
+            exemplar.save()
+
+            return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Reserva removida com sucesso!"
+            })
+
+        except Exemplar.DoesNotExist:
+            return HttpResponse("Exemplar não encontrado", status=404)
+
+        except Reserva.DoesNotExist:
+            return HttpResponse("Nenhuma reserva encontrada para este exemplar", status=404)
+
+    return HttpResponse("Método inválido", status=405)
