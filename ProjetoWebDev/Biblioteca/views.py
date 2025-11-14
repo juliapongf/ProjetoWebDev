@@ -117,6 +117,7 @@ def atualizar_livro(request):
             parsed = parse_qs(data)  # Usando parse_qs para obter os dados como um dicionário
 
             # Extraindo os valores dos campos
+            id = parsed.get("id", [None])[0]
             titulo = parsed.get("titulo", [None])[0]
             autor = parsed.get("autor", [None])[0]
             autores_novos = autor.split(',') if autor else []
@@ -127,7 +128,7 @@ def atualizar_livro(request):
             biografias_novas = biografia.split('/') if biografia else []
 
             # Atualizando o livro
-            livro = Livro.objects.filter(titulo=titulo).first()
+            livro = Livro.objects.filter(id=id).first()
             if livro:
                 if titulo:
                     livro.titulo = titulo
