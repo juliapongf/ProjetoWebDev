@@ -1,11 +1,35 @@
+{% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Biblioteca</title>
+
+    <link rel="stylesheet" href="{% static 'Biblioteca/styles.css' %}" >
 </head>
+
 <body>
-    olá
+
+    <header>
+
+        <div id="cabecalho">
+            <h1>📚 Biblioteca 📖</h1>
+        </div>
+
+        <button>
+            <a href="http://127.0.0.1:8000/biblioteca/pesquisa">Pesquisar</a>
+        </button>
+
+        <button>
+            <a href="http://127.0.0.1:8000/biblioteca/gerenciar">Gerenciar</a>
+        </button>
+
+  </header>
+
 </body>
+
 </html>
