@@ -10,6 +10,7 @@ urlpatterns = [
     path("remover-exemplar/", views.remover_exemplar, name="remover_exemplar"),
     path('divteste/',         views.index,            name='urlteste'),
     path("pesquisa/",         views.pesquisa,         name="pesquisa"),
-    path("pesquisar/",        views.pesquisar,        name="pesquisar")
+    path("pesquisar/",        views.pesquisar,        name="pesquisar"),
+    path("criar_reserva/",    views.criar_reserva,    name='criar_reserva')
 ]
 

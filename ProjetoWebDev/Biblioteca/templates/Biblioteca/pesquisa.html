@@ -20,6 +20,55 @@
             width: 80%;
             text-align: left;
         }
+                /*css relacionado a reservas*/
+        .form-container {
+            display: flex;
+            flex-direction: column; /* Stacks items vertically */
+            align-items: left; /* Centers items horizontally on the cross-axis */
+            justify-content: center; /* Centers items vertically on the main-axis (if height is defined) */
+        }
+
+        .form-field {
+            display: flex;
+            align-items: center; /* Aligns label and input vertically */
+            margin-bottom: 10px; /* Adds space between fields */
+        }
+
+        .form-field label {
+            width: 100px; /* Example fixed width for labels */
+            text-align: left; /* Aligns label text to the right */
+            margin-right: 10px;
+        }
+
+        /*css relacionado as mensagens que aparecem depois de tentar fazer uma reserva*/
+        .msg-box {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;        /* não ocupa toda a largura*/
+            max-width: 300px;             /* largura confortável */
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* cores dos alertas */
+        .msg-box.success { 
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb;
+        }
+
+        .msg-box.error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb;
+        }
+
+        .msg-box.warning { 
+            background-color: #fff3cd; 
+            color: #856404; 
+            border: 1px solid #ffeeba;
+        }
         
 
     </style>
@@ -53,12 +102,31 @@
     <div class="caixa" id="reservas">
         <h2>Reservar e devolver livros</h2>
         <h3>Reservar livros</h3>
-        <form>
-            Nome completo: <input type="text" name="nome"><br>
-            Email: <input type="email" name="email"><br>
-            Id do exemplar: <input type="number" name="id_exemplar"><br>
-            <input type="submit" value="Reservar"><br>
+         <form id="form-reserva"
+            hx-post="{% url 'criar_reserva' %}"
+            hx-target="#msg-area"
+            hx-swap="innerHTML">
+            {% csrf_token %}
+            <div class="form-field" >
+            
+                <label for="nome_completo">Nome completo:</label>     
+                <input type="text" name="nome"><br>
+            </div>
+
+            <div class="form-field">
+                <label for="email">Email:</label>
+                <input type="email" name="email"><br>
+            </div>
+            <div class="form-field">
+                <label for="id_exemplar">Id do exemplar: </label>
+                <input type="number"  min="0" name="exemplar"><br>
+            </div>
+             <div class="form-field" class = "form-reserva">
+                <input type="submit" value="Reservar"><br>
+             </div>   
         </form>
+    
+        <div id="msg-area"></div>
         <h3>Devolver livros</h3>
         <form>
             Nome completo: <input type="text" name="nome"><br>

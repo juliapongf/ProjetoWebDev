@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Livro, Autor, Autoria, Exemplar
+from .models import *
 from urllib.parse import parse_qs
 
 # Crie suas views aqui.
@@ -129,3 +129,45 @@ def pesquisar(request):
     return render(request, "Biblioteca/parcial_resultados.html", {
         "lista": lista, "tipo": tipo
     })
+
+def criar_reserva(request):
+    if request.method == "POST":
+        #usuario = Usuario.objects.get(nome__icontains=request.POST.get("nome"))
+        #exemplar = Exemplar.objects.get(id__icontains=request.POST.get("exemplar"))
+        # ---Tentar carregar usuario ---
+        try:
+            usuario = Usuario.objects.get(nome__icontains=request.POST.get("nome"))
+        except Usuario.DoesNotExist:
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Usuário não encontrado."
+            })
+        # --- TENTA CARREGAR EXEMPLAR ---
+        try:
+            exemplar = Exemplar.objects.get(id__icontains=request.POST.get("exemplar"))
+        except Exemplar.DoesNotExist:
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Exemplar não encontrado."
+            })
+
+        ####COLOCAR IF EXEMPLAR N DISPONIVEL
+        if exemplar.disponivel == False:
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Exemplar não disponível."
+            })
+
+        # --- VERIFICA SE JÁ TEM RESERVA ---
+        if Reserva.objects.filter(exemplar=exemplar).exists():
+            return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Esta reserva já foi realizada."
+            })
+        
+        # --- CRIA A RESERVA ---
+        reserva = Reserva(usuario=usuario, exemplar=exemplar)
+        reserva.save()
+        exemplar.disponivel = False
+        exemplar.save()
+
+        return render(request, "Biblioteca/partials/msg_success.html", {
+            "mensagem": "Reserva criada com sucesso!"
+        })
+    return HttpResponse("nada foi criado")
