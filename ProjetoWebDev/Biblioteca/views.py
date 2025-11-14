@@ -109,6 +109,68 @@ def remover_exemplar(request):
 
     return HttpResponse("Método inválido", status=405)
 
+def atualizar_livro(request):
+    if request.method == "PUT":
+        try:
+            # Pegando o corpo da requisição
+            data = request.body.decode("utf-8")  # Decodificando os dados enviados
+            parsed = parse_qs(data)  # Usando parse_qs para obter os dados como um dicionário
+
+            # Extraindo os valores dos campos
+            titulo = parsed.get("titulo", [None])[0]
+            autor = parsed.get("autor", [None])[0]
+            autores_novos = autor.split(',') if autor else []
+            genero = parsed.get("genero", [None])[0]
+            sinopse = parsed.get("sinopse", [None])[0]
+            ano = parsed.get("ano", [None])[0]
+            biografia = parsed.get("biografia", [None])[0]
+            biografias_novas = biografia.split('/') if biografia else []
+
+            # Atualizando o livro
+            livro = Livro.objects.filter(titulo=titulo).first()
+            if livro:
+                if titulo:
+                    livro.titulo = titulo
+                if sinopse:
+                    livro.sinopse = sinopse
+                if genero:
+                    livro.genero = genero
+                if ano:
+                    livro.ano_de_publicacao = ano
+                livro.save()
+            else:
+                return HttpResponse("O livro não existe", status=404)
+
+            # Atualizando os autores
+            i = 0
+            for autor_novo in autores_novos:
+                autor_existe = Autor.objects.filter(nome=autor_novo).first()
+                if autor_existe:
+                    if biografias_novas and i < len(biografias_novas):
+                        autor_existe.biografia = biografias_novas[i]
+                        autor_existe.save()
+                else:
+                    biografia_nova = biografias_novas[i] if i < len(biografias_novas) else ''
+                    autor_novo = Autor(nome=autor_novo, biografia=biografia_nova)
+                    autor_novo.save()
+                    autoria = Autoria(livro=livro, autor=autor_novo)
+                    autoria.save()
+                i += 1
+
+            # Retornando os dados atualizados
+            livros = Livro.objects.all()
+            autores = Autor.objects.all()
+            autorias = Autoria.objects.all()
+
+            return render(request, "Biblioteca/divteste.html", {
+                "livros": livros, "autores": autores, "autorias": autorias
+            })
+
+        except Exception as e:
+            return HttpResponse(f"Erro ao atualizar livro: {e}", status=500)
+
+    return HttpResponse("NADA FOI ATUALIZADO.", status=400)
+
 def pesquisa(request):
     livros = Livro.objects.all()
     return render(request, "Biblioteca/pesquisa.html", {"livros": livros})

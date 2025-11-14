@@ -118,6 +118,29 @@
 
     </div>
 
+    <h1>Atualizar o Acervo</h1>
+        <h2>Obra</h2>
+
+            <form
+                hx-put="{% url 'atualizar_livro' %}"
+                hx-target="#div_atualizacao"
+                hx-swap="innerHTML"
+            >
+                {% csrf_token %}
+                Título:  <input type="text"              name="titulo">              <br>
+                Gênero:  <input type="text"              name="genero">              <br>
+                Ano:     <input type="text"              name="ano">                 <br>
+                Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
+                Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
+                Autor(es):   <input type="text"          name="autor">               <br>
+                Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
+                Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
+
+                <input type="submit" value="Adicionar">
+            </form>
+
+    <div id="div_atualizacao">
+
 </body>
 
 </html>

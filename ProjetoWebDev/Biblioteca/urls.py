@@ -6,6 +6,7 @@ urlpatterns = [
     path("gerenciar/",        views.gerenciar,        name="gerenciar"),
     path("criar/",            views.criar_livro,      name="criar_livro"),
     path("criar-exemplar/",   views.criar_exemplar,   name="criar_exemplar"),
+    path("atualizar_livro/",  views.atualizar_livro,  name="atualizar_livro"),
     path("remover-livro/",    views.remover_livro,    name="remover_livro"),
     path("remover-exemplar/", views.remover_exemplar, name="remover_exemplar"),
     path('divteste/',         views.index,            name='urlteste'),
