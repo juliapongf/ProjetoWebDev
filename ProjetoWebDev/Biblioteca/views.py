@@ -166,8 +166,9 @@ def criar_reserva(request):
         reserva.save()
         exemplar.disponivel = False
         exemplar.save()
-
-        return render(request, "Biblioteca/partials/msg_success.html", {
-            "mensagem": "Reserva criada com sucesso!"
-        })
+        
+        if reserva:
+            return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Reserva criada com sucesso!"
+            })
     return HttpResponse("nada foi criado")
