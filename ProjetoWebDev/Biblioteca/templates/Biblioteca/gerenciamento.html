@@ -50,16 +50,42 @@
                     hx-swap="innerHTML"
                 >
                     {% csrf_token %}
-                    Título:  <input type="text"              name="titulo">              <br>
-                    Gênero:  <input type="text"              name="genero">              <br>
-                    Ano:     <input type="text"              name="ano">                 <br>
-                    Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
+                    <div class="form-field" >
+            
+                        <label for="titulo">Título:</label>     
+                        <input type="text" name="titulo"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="genero">Gênero:</label>     
+                        <input type="text" name="genero"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="ano">Ano:</label>     
+                        <input type="text" name="ano"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="sinopse">Sinopse:</label>     
+                        <textarea maxlength="1024" name="sinopse"> </textarea><br>
+                    </div>
                     Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
-                    Autor(es):   <input type="text"          name="autor">               <br>
-                    Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
-                    Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
+                    <div class="form-field" >
+            
+                        <label for="autor">Autor:</label>     
+                        <input type="text" name="autor"><br>
+                    </div>
+                    Biografias - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
+                    <div class="form-field" >
+            
+                        <label for="biografia">Biografia do(s) Autor(es):</label>     
+                        <textarea maxlength="1024" name="biografia"> </textarea><br>
+                    </div>
 
-                    <input type="submit" value="Adicionar">
+                    <div class="form-field">
+                        <input type="submit" value="Criar livro"><br>
+                    </div> 
                 </form>
 
             <div id="div_teste"></div>
@@ -77,9 +103,16 @@
                         hx-swap="innerHTML"
                     >
                         {% csrf_token %}
-                        Título:  <input type="text" name="titulo">
+                        <div class="form-field" >
+            
+                            <label for="titulo">Título:</label>     
+                            <input type="text" name="titulo"><br>
+                        </div>
+    
+                        <div class="form-field">
+                            <input type="submit" value="Adicionar"><br>
+                        </div> 
 
-                        <input type="submit" value="Adicionar">
                     </form>
 
             <div id="div_exemplares"></div>
@@ -100,9 +133,15 @@
                         hx-swap="innerHTML"
                     >
                         {% csrf_token %}
-                        Título:  <input type="text" name="titulo">
-
-                        <input type="submit" value="Remover">
+                        <div class="form-field" >
+            
+                            <label for="titulo">Título:</label>     
+                            <input type="text" name="titulo"><br>
+                        </div>
+    
+                        <div class="form-field">
+                            <input type="submit" value="Remover"><br>
+                        </div> 
                     </form>
 
             <div id="div_remover_livros"></div>
@@ -117,9 +156,15 @@
                     hx-swap="innerHTML"
                 >
                     {% csrf_token %}
-                    ID do Exemplar:  <input type="text" name="id_exemplar">
+                    <div class="form-field" >
+            
+                        <label for="id_exemplar">ID do Exemplar:</label>     
+                        <input type="text" name="id_exemplar"><br>
+                    </div>
 
-                    <input type="submit" value="Remover">
+                    <div class="form-field">
+                        <input type="submit" value="Remover"><br>
+                    </div> 
                 </form>
         
         <div id="div_remover_exemplares"></div>
@@ -139,17 +184,49 @@
                     hx-swap="innerHTML"
                 >
                     {% csrf_token %}
-                    ID do Livro: <input type="number"        name="id">                  <br>
-                    Título:  <input type="text"              name="titulo">              <br>
-                    Gênero:  <input type="text"              name="genero">              <br>
-                    Ano:     <input type="text"              name="ano">                 <br>
-                    Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
+                    <div class="form-field" >
+            
+                        <label for="id">ID do Livro:</label>     
+                        <input type="numer" name="id"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="titulo">Título:</label>     
+                        <input type="text" name="titulo"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="genero">Gênero:</label>     
+                        <input type="text" name="genero"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="ano">Ano:</label>     
+                        <input type="text" name="ano"><br>
+                    </div>
+                    <div class="form-field" >
+            
+                        <label for="sinopse">Sinopse:</label>     
+                        <textarea maxlength="1024" name="sinopse"> </textarea><br>
+                    </div>
                     Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
-                    Autor(es):   <input type="text"          name="autor">               <br>
-                    Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
-                    Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
+                    <div class="form-field" >
+            
+                        <label for="autor">Autor:</label>     
+                        <input type="text" name="autor"><br>
+                    </div>
+                    Biografias - Digite as biografias dos autores, separadas por barra (/),
+                    na ordem em que os autores aparecem (se quiser atualizar a(s) biografia(s) do(s) auor(es),
+                    é necessário colocar seu(s) nome(s) no campo de autor acima)<br>
+                    <div class="form-field" >
+            
+                        <label for="biografia">Biografia do(s) Autor(es):</label>     
+                        <textarea maxlength="1024" name="biografia"> </textarea><br>
+                    </div>
 
-                    <input type="submit" value="Atualizar">
+                    <div class="form-field">
+                    <input type="submit" value="Atualizar"><br>
+                </div> 
                 </form>
 
             <div id="div_atualizacao"></div>

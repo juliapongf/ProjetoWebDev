@@ -5,7 +5,7 @@
 }
 
 @media (min-width: 800px) {
-    .caixa{
+.caixa{
     border: 5px solid #ff00a6;
     background-color: white;
     width: 750px;
@@ -14,7 +14,8 @@
     }
 }
 @media (max-width: 799px) {
-    .caixa{
+.caixa{
+    text-align: center;
     border: 5px solid #ff00a6;
     background-color: white;
     width: 90%;
@@ -24,10 +25,14 @@
 }
 
 .caixinha{
-    justify-content: center;
+    margin: 0 auto;
     border: 3px solid black;
     width: 80%;
     text-align: left;
+}
+
+h1, h2{
+    text-align: center;
 }
 
         /*css relacionado a reservas*/
