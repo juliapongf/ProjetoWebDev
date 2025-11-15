@@ -35,7 +35,7 @@
 </header>
 
 <div id="principal">
-    <div id="pesquisa">
+    <div class="caixa" id="pesquisa">
         <h1>Pesquisar livro ou autor</h1>
         <form method="GET"
             hx-get="{% url 'pesquisar' %}"
@@ -49,11 +49,12 @@
             <input type="radio" name="tipodapesquisa" value="livro" checked> Livro
             <input type="radio" name="tipodapesquisa" value="autor"> Autor
         </form>
+
+        <div id="resultados">
+        </div>
     </div>
     <br>
 
-    <div id="resultados">
-    </div>
     <br>
     <div class="caixa" id="reservas">
         <h1>Reservar e devolver livros</h1>

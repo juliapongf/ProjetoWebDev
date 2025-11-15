@@ -1,10 +1,10 @@
-<div class="caixa">
+<div class="caixinha">
 <h2>Resultados</h2>
 
 {% if tipo == "livro" %}
     {% for elemento in lista %}
 
-    <div class="caixinha">
+    <div class="caixinha2">
         <ul>
             <li>Título: {{ elemento.titulo }}</li>
             <li>ID do livro: {{elemento.id }}</li>
@@ -41,7 +41,7 @@
 
 {% for elemento in lista %}
 
-    <div class="caixinha">
+    <div class="caixinha2">
         <ul>
             <li>Nome: {{ elemento.nome }}</li>
             <li>Livro(s):
