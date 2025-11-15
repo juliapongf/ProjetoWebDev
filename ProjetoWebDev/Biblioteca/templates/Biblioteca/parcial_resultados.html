@@ -7,7 +7,7 @@
     <div class="caixinha">
         <ul>
             <li>Título: {{ elemento.titulo }}</li>
-            <li>ID do livro {{elemento.id }}</li>
+            <li>ID do livro: {{elemento.id }}</li>
             <li>Autor(es):
                 <ul>
                     {% for autoria in elemento.autoria.all %}
@@ -21,8 +21,10 @@
             <li>Número de exemplares disponíveis: {{ elemento.exemplares_disponiveis }}</li>
             <li>Exemplares disponíveis:</li>
             <ul>
-                {% for exemplar in livro.exemplar_set.all() %}
-                    <li>Exemplar ID: {{ exemplar.id }} - Disponível: {{ exemplar.disponivel }}</li>
+                {% for exemplar in elemento.exemplares.all %}
+                        {% if exemplar.disponivel %}
+                            <li>Exemplar ID: {{ exemplar.id }}</li>
+                        {% endif %}
                 {% empty %}
                     <li>Sem exemplares registrados</li>
                 {% endfor %}
