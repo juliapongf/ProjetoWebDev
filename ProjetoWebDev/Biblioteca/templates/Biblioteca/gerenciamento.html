@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -7,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Acervo</title>
+    <link rel="stylesheet" href="{% static 'Biblioteca/paginas.css' %}" >
 </head>
 
 <body>
@@ -35,112 +37,124 @@
 
     </header>
 
-    <h1>Adicionar ao Acervo</h1>
-        <h2>Obra</h2>
+    <div class="caixa">
+        <h1>Adicionar ao Acervo</h1>
 
-            <form
-                method="POST"
-                hx-post="{% url 'criar_livro' %}"
-                hx-target="#div_teste"
-                hx-swap="innerHTML"
-            >
-                {% csrf_token %}
-                Título:  <input type="text"              name="titulo">              <br>
-                Gênero:  <input type="text"              name="genero">              <br>
-                Ano:     <input type="text"              name="ano">                 <br>
-                Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
-                Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
-                Autor(es):   <input type="text"          name="autor">               <br>
-                Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
-                Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
+        <div class="caixinha">
+            <h2>Obra</h2>
 
-                <input type="submit" value="Adicionar">
-            </form>
+                <form
+                    method="POST"
+                    hx-post="{% url 'criar_livro' %}"
+                    hx-target="#div_teste"
+                    hx-swap="innerHTML"
+                >
+                    {% csrf_token %}
+                    Título:  <input type="text"              name="titulo">              <br>
+                    Gênero:  <input type="text"              name="genero">              <br>
+                    Ano:     <input type="text"              name="ano">                 <br>
+                    Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
+                    Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
+                    Autor(es):   <input type="text"          name="autor">               <br>
+                    Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
+                    Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
 
-    <div id="div_teste">
+                    <input type="submit" value="Adicionar">
+                </form>
+
+            <div id="div_teste"></div>
+
+        </div>
+
+        <div class="caixinha">
+            
+            <h2>Exemplar</h2>
+
+                    <form
+                        method="POST"
+                        hx-post="{% url 'criar_exemplar' %}"
+                        hx-target="#div_exemplares"
+                        hx-swap="innerHTML"
+                    >
+                        {% csrf_token %}
+                        Título:  <input type="text" name="titulo">
+
+                        <input type="submit" value="Adicionar">
+                    </form>
+
+            <div id="div_exemplares"></div>
+
+        </div>
 
     </div>
+
+    <div class="caixa">
+        <div class="caixinha">
+            <h1>Remover do Acervo</h1>
+                <h2>Obra</h2>
+
+                    <form
+                        method="POST"
+                        hx-delete="{% url 'remover_livro' %}"
+                        hx-target="#div_remover_livros"
+                        hx-swap="innerHTML"
+                    >
+                        {% csrf_token %}
+                        Título:  <input type="text" name="titulo">
+
+                        <input type="submit" value="Remover">
+                    </form>
+
+            <div id="div_remover_livros"></div>
+        </div>
+
+        <div class="caixinha">
+            <h2>Exemplar</h2>
+                <form
+                    method="POST"
+                    hx-delete="{% url 'remover_exemplar' %}"
+                    hx-target="#div_remover_exemplares"
+                    hx-swap="innerHTML"
+                >
+                    {% csrf_token %}
+                    ID do Exemplar:  <input type="text" name="id_exemplar">
+
+                    <input type="submit" value="Remover">
+                </form>
         
-    <h2>Exemplar</h2>
-
-            <form
-                method="POST"
-                hx-post="{% url 'criar_exemplar' %}"
-                hx-target="#div_exemplares"
-                hx-swap="innerHTML"
-            >
-                {% csrf_token %}
-                Título:  <input type="text" name="titulo">
-
-                <input type="submit" value="Adicionar">
-            </form>
-
-    <div id="div_exemplares">
+        <div id="div_remover_exemplares"></div>
+        </div>
 
     </div>
 
+    <div class="caixa">
+        <h1>Atualizar o Acervo</h1>
 
-    <h1>Remover do Acervo</h1>
-        <h2>Obra</h2>
+        <div class="caixinha">
+            <h2>Obra</h2>
 
-            <form
-                method="POST"
-                hx-delete="{% url 'remover_livro' %}"
-                hx-target="#div_remover_livros"
-                hx-swap="innerHTML"
-            >
-                {% csrf_token %}
-                Título:  <input type="text" name="titulo">
+                <form
+                    hx-put="{% url 'atualizar_livro' %}"
+                    hx-target="#div_atualizacao"
+                    hx-swap="innerHTML"
+                >
+                    {% csrf_token %}
+                    ID do Livro: <input type="number"        name="id">                  <br>
+                    Título:  <input type="text"              name="titulo">              <br>
+                    Gênero:  <input type="text"              name="genero">              <br>
+                    Ano:     <input type="text"              name="ano">                 <br>
+                    Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
+                    Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
+                    Autor(es):   <input type="text"          name="autor">               <br>
+                    Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
+                    Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
 
-                <input type="submit" value="Remover">
-            </form>
+                    <input type="submit" value="Atualizar">
+                </form>
 
-    <div id="div_remover_livros">
-
+            <div id="div_atualizacao"></div>
+        </div>    
     </div>
-    
-
-    
-        <h2>Exemplar</h2>
-            <form
-                method="POST"
-                hx-delete="{% url 'remover_exemplar' %}"
-                hx-target="#div_remover_exemplares"
-                hx-swap="innerHTML"
-            >
-                {% csrf_token %}
-                ID do Exemplar:  <input type="text" name="id_exemplar">
-
-                <input type="submit" value="Remover">
-            </form>
-    
-    <div id="div_remover_exemplares">
-
-    </div>
-
-    <h1>Atualizar o Acervo</h1>
-        <h2>Obra</h2>
-
-            <form
-                hx-put="{% url 'atualizar_livro' %}"
-                hx-target="#div_atualizacao"
-                hx-swap="innerHTML"
-            >
-                {% csrf_token %}
-                ID do Livro: <input type="number"        name="id">                  <br>
-                Título:  <input type="text"              name="titulo">              <br>
-                Gênero:  <input type="text"              name="genero">              <br>
-                Ano:     <input type="text"              name="ano">                 <br>
-                Sinopse: <br> <textarea maxlength="1024" name="sinopse"> </textarea> <br>
-                Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
-                Autor(es):   <input type="text"          name="autor">               <br>
-                Autor(es) - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
-                Biografia do(s) Autor(es): <br> <textarea maxlength="1024" name="biografia"> </textarea> <br>
-
-                <input type="submit" value="Atualizar">
-            </form>
-
-    <div id="div_atualizacao">
 
 </body>
 

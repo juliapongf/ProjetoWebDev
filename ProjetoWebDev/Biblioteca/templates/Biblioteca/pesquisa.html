@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,74 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca</title>
-    <style>
-        #cabecalho {
-            text-align: center;
-            border: 3px solid black;
-            font-size: 40px;
-        }
+    <link rel="stylesheet" href="{% static 'Biblioteca/paginas.css' %}" >
 
-        .caixa {
-            border: 3px solid black;
-        }
-
-        .caixinha {
-            border: 3px solid black;
-            width: 80%;
-            text-align: left;
-        }
-                /*css relacionado a reservas*/
-        .form-container {
-            display: flex;
-            flex-direction: column; /* Stacks items vertically */
-            align-items: left; /* Centers items horizontally on the cross-axis */
-            justify-content: center; /* Centers items vertically on the main-axis (if height is defined) */
-        }
-
-        .form-field {
-            display: flex;
-            align-items: center; /* Aligns label and input vertically */
-            margin-bottom: 10px; /* Adds space between fields */
-        }
-
-        .form-field label {
-            width: 100px; /* Example fixed width for labels */
-            text-align: left; /* Aligns label text to the right */
-            margin-right: 10px;
-        }
-
-        /*css relacionado as mensagens que aparecem depois de tentar fazer uma reserva*/
-        .msg-box {
-            margin-top: 8px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            display: inline-block;        /* não ocupa toda a largura*/
-            max-width: 300px;             /* largura confortável */
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-
-        /* cores dos alertas */
-        .msg-box.success { 
-            background-color: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb;
-        }
-
-        .msg-box.error { 
-            background-color: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb;
-        }
-
-        .msg-box.warning { 
-            background-color: #fff3cd; 
-            color: #856404; 
-            border: 1px solid #ffeeba;
-        }
-        
-
-    </style>
 </head>
 <body>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -101,7 +36,7 @@
 
 <div id="principal">
     <div id="pesquisa">
-        <h2>Pesquisar livro ou autor</h2>
+        <h1>Pesquisar livro ou autor</h1>
         <form method="GET"
             hx-get="{% url 'pesquisar' %}"
             hx-target="#resultados"
@@ -117,85 +52,95 @@
     </div>
     <br>
 
-    <div class="caixa" id="resultados">
+    <div id="resultados">
     </div>
     <br>
     <div class="caixa" id="reservas">
-        <h2>Reservar e devolver livros</h2>
-        <h3>Reservar livros</h3>
-         <form id="form-reserva"
-            hx-post="{% url 'criar_reserva' %}"
-            hx-target="#msg-area"
-            hx-swap="innerHTML">
-            {% csrf_token %}
-            <div class="form-field" >
-            
-                <label for="nome_completo">Nome completo:</label>     
-                <input type="text" name="nome"><br>
-            </div>
+        <h1>Reservar e devolver livros</h1>
 
-            <div class="form-field">
-                <label for="email">Email:</label>
-                <input type="email" name="email"><br>
-            </div>
-            <div class="form-field">
-                <label for="id_exemplar">Id do exemplar: </label>
-                <input type="number"  min="0" name="exemplar"><br>
-            </div>
-             <div class="form-field" class = "form-reserva">
-                <input type="submit" value="Reservar"><br>
-             </div>   
-        </form>
+        <div class="caixinha">
+            <h2>Reservar livros</h2><br>
+            <form id="form-reserva"
+                hx-post="{% url 'criar_reserva' %}"
+                hx-target="#msg-area"
+                hx-swap="innerHTML">
+                {% csrf_token %}
+                <div class="form-field" >
+            
+                    <label for="nome_completo">Nome completo:</label>     
+                    <input type="text" name="nome"><br>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email"><br>
+                </div>
+                <div class="form-field">
+                    <label for="id_exemplar">Id do exemplar: </label>
+                    <input type="number"  min="0" name="exemplar"><br>
+                </div>
+                <div class="form-field" class = "form-reserva">
+                    <input type="submit" value="Reservar"><br>
+                </div>   
+            </form>
     
-        <div id="msg-area"></div>
-        <h3>Devolver livros</h3>
-         <form id="form-reserva"
-            method="POST"
-            hx-delete="{% url 'remover_reserva' %}"
-            hx-target="#msg-area-devolucao"
-            hx-swap="innerHTML"
-            >
-            {% csrf_token %}
-            <div class="form-field" >
-                <label for="nome_completo">Nome completo:</label>     
-                <input type="text" name="nome"><br>
-            </div>
+            <div id="msg-area"></div>
 
-            <div class="form-field">
-                <label for="email">Email:</label>
-                <input type="email" name="email"><br>
-            </div>
-            <div class="form-field">
-                <label for="id_exemplar">Id do exemplar: </label>
-                <input type="number"  min="0" name="exemplar_id"><br>
-            </div>
-             <div class="form-field" class = "form-reserva">
-                <input type="submit" value="Devolver"><br>
-             </div>   
-        </form>
-        <div id="msg-area-devolucao"></div>
+        </div>
+        <br>
+        <div class="caixinha">
+            <h2>Devolver livros</h2><br>
+            <form id="form-reserva"
+                method="POST"
+                hx-delete="{% url 'remover_reserva' %}"
+                hx-target="#msg-area-devolucao"
+                hx-swap="innerHTML"
+                >
+                {% csrf_token %}
+                <div class="form-field" >
+                    <label for="nome_completo">Nome completo:</label>     
+                    <input type="text" name="nome"><br>
+                </div>
 
-        <h3>Criar usuário</h3>
-         <form id="form-usuario"
-            hx-post="{% url 'criar_usuario' %}"
-            hx-target="#msg-area-usuario"
-            hx-swap="innerHTML">
-            {% csrf_token %}
-            <div class="form-field" >
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email"><br>
+                </div>
+                <div class="form-field">
+                    <label for="id_exemplar">Id do exemplar: </label>
+                    <input type="number"  min="0" name="exemplar_id"><br>
+                </div>
+                <div class="form-field" class = "form-reserva">
+                    <input type="submit" value="Devolver"><br>
+                </div>   
+            </form>
+            <div id="msg-area-devolucao"></div>
+
+        </div>
+        <br>
+        <div class="caixinha">
+            <h2>Criar usuário</h2>
+            <form id="form-usuario"
+                hx-post="{% url 'criar_usuario' %}"
+                hx-target="#msg-area-usuario"
+                hx-swap="innerHTML">
+                {% csrf_token %}
+                <div class="form-field" >
             
-                <label for="nome_completo">Nome completo:</label>     
-                <input type="text" name="nome"><br>
-            </div>
+                    <label for="nome_completo">Nome completo:</label>     
+                    <input type="text" name="nome"><br>
+                </div>
 
-            <div class="form-field">
-                <label for="email">Email:</label>
-                <input type="email" name="email"><br>
-            </div>
-             <div class="form-field" class = "form-reserva">
-                <input type="submit" value="Criar usuário"><br>
-             </div>   
-        </form>
-        <div id="msg-area-usuario"></div>
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email"><br>
+                </div>
+                <div class="form-field" class = "form-reserva">
+                    <input type="submit" value="Criar usuário"><br>
+                </div>   
+            </form>
+            <div id="msg-area-usuario"></div>
+        </div>
         <br><br>
 
     </div>
