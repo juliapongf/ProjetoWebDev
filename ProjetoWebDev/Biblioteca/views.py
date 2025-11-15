@@ -229,6 +229,9 @@ def criar_reserva(request):
         reserva.save()
         exemplar.disponivel = False
         exemplar.save()
+        livro = exemplar.livro
+        livro.exemplares_disponiveis -= 1
+        livro.save()
         
         if reserva:
             return render(request, "Biblioteca/partials/msg_success.html", {
@@ -260,6 +263,9 @@ def remover_reserva(request):
             # Marca exemplar como disponível novamente
             exemplar.disponivel = True
             exemplar.save()
+            livro = exemplar.livro
+            livro.exemplares_disponiveis += 1
+            livro.save()
 
             return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Reserva removida com sucesso!"
