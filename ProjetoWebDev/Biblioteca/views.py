@@ -272,3 +272,13 @@ def remover_reserva(request):
             return HttpResponse("Nenhuma reserva encontrada para este exemplar", status=404)
 
     return HttpResponse("Método inválido", status=405)
+
+def criar_usuario(request):
+    if request.method == "POST":
+        nome =request.POST.get("nome")
+        email =request.POST.get("email")
+        usuario = Usuario(nome=nome, email=email)
+        usuario.save()
+        return HttpResponse("Usuário criado com sucesso.")
+
+    return HttpResponse("NADA FOI CRIADO.")

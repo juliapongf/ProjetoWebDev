@@ -176,8 +176,8 @@
         <div id="msg-area-devolucao"></div>
 
         <h3>Criar usuário</h3>
-         <form id="form-reserva"
-            hx-post="{% url 'criar_reserva' %}"
+         <form id="form-usuario"
+            hx-post="{% url 'criar_usuario' %}"
             hx-target="#msg-area-usuario"
             hx-swap="innerHTML">
             {% csrf_token %}

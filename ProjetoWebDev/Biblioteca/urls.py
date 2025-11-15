@@ -13,6 +13,7 @@ urlpatterns = [
     path("pesquisa/",         views.pesquisa,         name="pesquisa"),
     path("pesquisar/",        views.pesquisar,        name="pesquisar"),
     path("criar_reserva/",    views.criar_reserva,    name='criar_reserva'),
-    path("remover-reserva/",  views.remover_reserva,  name='remover_reserva')
+    path("remover-reserva/",  views.remover_reserva,  name='remover_reserva'),
+    path("criar_usuario/",    views.criar_usuario,    name="criar_usuario")
 ]
 
