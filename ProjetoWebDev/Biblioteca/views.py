@@ -195,16 +195,15 @@ def pesquisar(request):
 
 def criar_reserva(request):
     if request.method == "POST":
-        #usuario = Usuario.objects.get(nome__icontains=request.POST.get("nome"))
-        #exemplar = Exemplar.objects.get(id__icontains=request.POST.get("exemplar"))
-        # ---Tentar carregar usuario ---
+
+        # Tenta carregar usuário 
         try:
             usuario = Usuario.objects.get(nome__icontains=request.POST.get("nome"))
         except Usuario.DoesNotExist:
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Usuário não encontrado."
             })
-        # --- TENTA CARREGAR EXEMPLAR ---
+        # Tenta carrega exemplar 
         try:
             exemplar = Exemplar.objects.get(id__icontains=request.POST.get("exemplar"))
         except Exemplar.DoesNotExist:
@@ -212,19 +211,18 @@ def criar_reserva(request):
                 "mensagem": "Exemplar não encontrado."
             })
 
-        ####COLOCAR IF EXEMPLAR N DISPONIVEL
         if exemplar.disponivel == False:
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Exemplar não disponível."
             })
 
-        # --- VERIFICA SE JÁ TEM RESERVA ---
+        # Verifica se já tem reserva
         if Reserva.objects.filter(exemplar=exemplar).exists():
             return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Esta reserva já foi realizada."
             })
         
-        # --- CRIA A RESERVA ---
+        # Cria a reserva
         reserva = Reserva(usuario=usuario, exemplar=exemplar)
         reserva.save()
         exemplar.disponivel = False
@@ -248,14 +246,27 @@ def remover_reserva(request):
 
             exemplar_id = parsed.get("exemplar_id", [None])[0]
 
+            # Tenta pegar nome do usuário
+            nome = parsed.get("nome", [None])[0]
+
             if not exemplar_id:
-                return HttpResponse("ID do exemplar não informado", status=400)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "ID do exemplar não informado."
+                })
+            if not nome:
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Nome do usuário não informado."
+                })
 
             # Pega o exemplar
             exemplar = Exemplar.objects.get(id=exemplar_id)
 
-            # Verifica se ele tem reserva
-            reserva = Reserva.objects.get(exemplar=exemplar)
+            # Verfica usuário
+            usuario = Usuario.objects.get(nome=nome)
+
+            # Verifica se o usuário tem reserva
+            reserva = Reserva.objects.get(exemplar=exemplar, usuario__nome=nome)
+            
 
             # Remove a reserva
             reserva.delete()
@@ -272,12 +283,21 @@ def remover_reserva(request):
             })
 
         except Exemplar.DoesNotExist:
-            return HttpResponse("Exemplar não encontrado", status=404)
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Exemplar não encontrado."
+            })
+        except Usuario.DoesNotExist:
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Usuário não cadastrado."
+            })
+
 
         except Reserva.DoesNotExist:
-            return HttpResponse("Nenhuma reserva encontrada para este exemplar", status=404)
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Reserva não encontrada."
+            })
 
-    return HttpResponse("Método inválido", status=405)
+    return HttpResponse("NADA FOI REMOVIDO", status=405)
 
 def criar_usuario(request):
     if request.method == "POST":
