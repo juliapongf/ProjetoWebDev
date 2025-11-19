@@ -6,14 +6,16 @@ from urllib.parse import parse_qs
 # Crie suas views aqui.
 
 def index(request):
-    return render(request, "Biblioteca/index.html")
+    return render(request, "Biblioteca/index.html") # Renderiza a página principal da biblioteca
+
 
 def gerenciar(request):
-    livros = Livro.objects.all()
-    return render(request, "Biblioteca/gerenciamento.html", {"livros": livros})
+    return render(request, "Biblioteca/gerenciamento.html") # Renderiza a página de gerenciamento
 
-def criar_livro(request):    
+
+def criar_livro(request):
     if request.method == "POST":
+        # Coletar todos os campos preenchidos no formulário
         titulo = request.POST.get("titulo")
         autor = request.POST.get("autor")
         autores_novos = autor.split(',')
@@ -32,31 +34,44 @@ def criar_livro(request):
                 "mensagem": "Ano não informado."
                 })
 
+        # Procura no acervo o livro com o título preenchido no formulário.
         livro_existe = Livro.objects.filter(titulo=titulo).first()
+
+        # Se o livro já existir, não adiciona
         if livro_existe:
             return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Este livro já está adicionado ao acervo."
             })
+        # Caso contrário, adiciona o novo livro ao acervo
         else:
             livro = Livro(titulo=titulo, genero=genero, sinopse=sinopse, ano_de_publicacao=ano, exemplares_disponiveis=0)
             livro.save()
 
+
         i=0
+        # Para cada autor novo inserido no formulário...
         for autor_novo in autores_novos:
+
+            # Procura no banco de dados o autor preenchido no formulário.
             autor_existe = Autor.objects.filter(nome=autor_novo).first()
+
+            # Se o autor já existir, o "autor novo" será usado para criar a autoria de seu novo livro que ainda não estava no acervo.
             if autor_existe:
                 autor_novo = autor_existe
+            # Caso contrário, cria o autor novo
             else:
                 biografia_nova=biografias_novas[i]
                 autor_novo = Autor(nome=autor_novo, biografia=biografia_nova)
                 autor_novo.save()
+
+            # Cria a autoria (livro + autor)
             autoria = Autoria(livro=livro, autor=autor_novo)
             autoria.save()
 
 
         return render(request, "Biblioteca/partials/msg_success.html", {
-                "mensagem": "Livro adicionado ao acervo com sucesso!"
-             })
+            "mensagem": "Livro adicionado ao acervo com sucesso!"
+        })
 
     return HttpResponse("NADA FOI CRIADO.")
 
@@ -78,7 +93,7 @@ def criar_exemplar(request):
                 "mensagem": "Não há livro com este título no acervo."
             })
     
-
+        # Cria o exemplar através do título do livro inserido no formulário.
         exemplar = Exemplar(livro=livro, disponivel=True)
         livro.exemplares_disponiveis += 1
         livro.save()
@@ -94,9 +109,9 @@ def criar_exemplar(request):
 def remover_livro(request):
     if request.method == "DELETE":
         try:
-            data = request.body.decode("utf-8")
-            parsed = parse_qs(data)
-            titulo = parsed.get("titulo", [None])[0]
+            data = request.body.decode("utf-8") # decodifica o request (binário -> utf-8)
+            parsed = parse_qs(data) # transforma a estrutura dos dados do formulário para um dicionário
+            titulo = parsed.get("titulo", [None])[0] # acessa a chave "título" do dicionário
 
             if not titulo:
                 return render(request, "Biblioteca/partials/msg_warning.html", {
@@ -120,9 +135,9 @@ def remover_livro(request):
 def remover_exemplar(request):
     if request.method == "DELETE":
         try:
-            data = request.body.decode("utf-8")
-            parsed = parse_qs(data)
-            id_exemplar = parsed.get("id_exemplar", [None])[0]
+            data = request.body.decode("utf-8") # decodifica o request (binário -> utf-8)
+            parsed = parse_qs(data) # transforma a estrutura dos dados do formulário para um dicionário
+            id_exemplar = parsed.get("id_exemplar", [None])[0] # acessa a chave "id_exemplar" do dicionário
 
             if not id_exemplar:
                 return render(request, "Biblioteca/partials/msg_warning.html", {
@@ -131,10 +146,9 @@ def remover_exemplar(request):
 
             exemplar = Exemplar.objects.get(id=id_exemplar)
 
+            # Obtém o livro associado ao exemplar especificado, decrementa o número de exemplares disponíveis e salva as modificações do objeto livro
             livro = exemplar.livro
-                    
             livro.exemplares_disponiveis -= 1
-
             livro.save()
 
             exemplar.delete()
@@ -154,10 +168,10 @@ def atualizar_livro(request):
     if request.method == "PUT":
         try:
             # Pegando o corpo da requisição
-            data = request.body.decode("utf-8")  # Decodificando os dados enviados
+            data = request.body.decode("utf-8") # Decodificando os dados enviados
             parsed = parse_qs(data)  # Usando parse_qs para obter os dados como um dicionário
 
-            # Extraindo os valores dos campos
+            # Extraindo os valores dos campos do formulário
             id = parsed.get("id", [None])[0]
             titulo = parsed.get("titulo", [None])[0]
             autor = parsed.get("autor", [None])[0]
@@ -219,9 +233,9 @@ def atualizar_livro(request):
 
     return HttpResponse("NADA FOI ATUALIZADO.", status=400)
 
+
 def pesquisa(request):
-    livros = Livro.objects.all()
-    return render(request, "Biblioteca/pesquisa.html", {"livros": livros})
+    return render(request, "Biblioteca/pesquisa.html") # Renderiza a página de pesquisa
 
 
 def pesquisar(request):
@@ -236,6 +250,7 @@ def pesquisar(request):
     else:
         lista = []
 
+    # Renderiza os resultados da pesquisa na página de pesquisa
     return render(request, "Biblioteca/parcial_resultados.html", {
         "lista": lista, "tipo": tipo
     })
@@ -302,10 +317,10 @@ def remover_reserva(request):
     if request.method == "DELETE":
         try:
             # HTMX envia o corpo como querystring
-            data = request.body.decode("utf-8")
-            parsed = parse_qs(data)
+            data = request.body.decode("utf-8") # decodifica o request (binário -> utf-8)
+            parsed = parse_qs(data) # transforma a estrutura dos dados do formulário para um dicionário
 
-            exemplar_id = parsed.get("exemplar_id", [None])[0]
+            exemplar_id = parsed.get("exemplar_id", [None])[0] # acessa a chave "exemplar_id" do dicionário
 
             #tenta pegar nome do usuário
             nome = parsed.get("nome", [None])[0]
