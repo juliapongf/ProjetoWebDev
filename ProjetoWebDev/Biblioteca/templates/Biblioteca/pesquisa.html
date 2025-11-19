@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     {% csrf_token %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,17 +11,20 @@
 
 </head>
 <body>
+
+    {# Scripts necessários para rodar htmx e para fazer requests delete #}
+    
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script>
-    document.body.addEventListener('htmx:configRequest', function(event) {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-        if (csrfToken) {
-        event.detail.headers['X-CSRFToken'] = csrfToken;
-        }
-    });
+        document.body.addEventListener('htmx:configRequest', function(event) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+            if (csrfToken) {
+                event.detail.headers['X-CSRFToken'] = csrfToken;
+            }
+        });
     </script>
 
-<header>
+    <header>
 
         <div id="cabecalho">
             <h1>📚 Biblioteca 📖</h1>
@@ -32,117 +36,123 @@
             <button class="topbar_button"> <a href="http://127.0.0.1:8000/biblioteca/gerenciar">Gerenciar</a> </button>
         </div>
 
-</header>
+    </header>
 
-<div id="principal">
-    <div class="caixa" id="pesquisa">
-        <h1>Pesquisar livro ou autor</h1>
-        <div id="form-pesquisa">
-            <form method="GET"
-                hx-get="{% url 'pesquisar' %}"
-                hx-target="#resultados"
-                hx-swap="innerHTML"
-                hx-trigger="submit"
-                >
-                <input type="text" placeholder="Faça sua pesquisa" name="busca">
-                <button type="submit">Pesquisar</button>
-                <br>
-                <input type="radio" name="tipodapesquisa" value="livro" checked> Livro
-                <input type="radio" name="tipodapesquisa" value="autor"> Autor
-            </form>
+    <div id="principal">
+
+        <div class="caixa" id="pesquisa">
+
+            <h1>Pesquisar livro ou autor</h1>
+
+            <div id="form-pesquisa">
+                <form method="GET"
+                    hx-get="{% url 'pesquisar' %}"
+                    hx-target="#resultados"
+                    hx-swap="innerHTML"
+                    hx-trigger="submit"
+                    >
+                    <input type="text" placeholder="Faça sua pesquisa" name="busca">
+                    <button type="submit">Pesquisar</button>
+                    <br>
+                    <input type="radio" name="tipodapesquisa" value="livro" checked> Livro
+                    <input type="radio" name="tipodapesquisa" value="autor"> Autor
+                </form>
+
+            </div>
+
+            <div id="resultados"></div>
+
+            <br>
+            
+        </div>
+        <br>
+
+        <br>
+        <div class="caixa" id="reservas">
+
+            <h1>Reservar e devolver livros</h1>
+
+            <div class="caixinha">
+                <h2>Reservar livros</h2><br>
+                <form id="form-reserva"
+                    hx-post="{% url 'criar_reserva' %}"
+                    hx-target="#msg-area"
+                    hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <div class="form-field" >                
+                        <label for="nome_completo">Nome de usuário:</label>     
+                        <input type="text" name="nome"><br>
+                    </div>
+                    <div class="form-field">
+                        <label for="id_exemplar">Id do exemplar: </label>
+                        <input type="number"  min="0" name="exemplar"><br>
+                    </div>
+                    <div class="form-field submit" class = "form-reserva">
+                        <input type="submit" value="Reservar"><br>
+                    </div>   
+                </form>
+        
+                <div id="msg-area"></div>
+
+            </div>
+
+            <br>
+
+            <div class="caixinha">
+                <h2>Devolver livros</h2><br>
+                <form id="form-reserva"
+                    method="POST"
+                    hx-delete="{% url 'remover_reserva' %}"
+                    hx-target="#msg-area-devolucao"
+                    hx-swap="innerHTML"
+                    >
+                    {% csrf_token %}
+                    <div class="form-field" >
+                        <label for="nome_completo">Nome de usuário:</label>     
+                        <input type="text" name="nome"><br>
+                    </div>
+                    <div class="form-field">
+                        <label for="id_exemplar">Id do exemplar: </label>
+                        <input type="number"  min="0" name="exemplar_id"><br>
+                    </div>
+                    <div class="form-field submit" class = "form-reserva">
+                        <input type="submit" value="Devolver"><br>
+                    </div>   
+                </form>
+                <div id="msg-area-devolucao"></div>
+
+            </div>
+
+            <br>
+
+            <div class="caixinha">
+                <h2>Criar usuário</h2>
+                <form id="form-usuario"
+                    hx-post="{% url 'criar_usuario' %}"
+                    hx-target="#msg-area-usuario"
+                    hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <div class="form-field">                
+                        <label for="nome_completo">Nome de usuário:</label>     
+                        <input type="text" name="nome"><br>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email"><br>
+                    </div>
+                    <div class="form-field submit" class = "form-reserva">
+                        <input type="submit" value="Criar usuário"><br>
+                    </div>   
+                </form>
+                <div id="msg-area-usuario"></div>
+            </div>
+
+            <br><br>
 
         </div>
 
-        <div id="resultados"></div>
-
-        <br>
         
     </div>
-    <br>
-
-    <br>
-    <div class="caixa" id="reservas">
-        <h1>Reservar e devolver livros</h1>
-
-        <div class="caixinha">
-            <h2>Reservar livros</h2><br>
-            <form id="form-reserva"
-                hx-post="{% url 'criar_reserva' %}"
-                hx-target="#msg-area"
-                hx-swap="innerHTML">
-                {% csrf_token %}
-                <div class="form-field" >
-            
-                    <label for="nome_completo">Nome completo:</label>     
-                    <input type="text" name="nome"><br>
-                </div>
-                <div class="form-field">
-                    <label for="id_exemplar">Id do exemplar: </label>
-                    <input type="number"  min="0" name="exemplar"><br>
-                </div>
-                <div class="form-field" class = "form-reserva">
-                    <input type="submit" value="Reservar"><br>
-                </div>   
-            </form>
-    
-            <div id="msg-area"></div>
-
-        </div>
-        <br>
-        <div class="caixinha">
-            <h2>Devolver livros</h2><br>
-            <form id="form-reserva"
-                method="POST"
-                hx-delete="{% url 'remover_reserva' %}"
-                hx-target="#msg-area-devolucao"
-                hx-swap="innerHTML"
-                >
-                {% csrf_token %}
-                <div class="form-field" >
-                    <label for="nome_completo">Nome completo:</label>     
-                    <input type="text" name="nome"><br>
-                </div>
-                <div class="form-field">
-                    <label for="id_exemplar">Id do exemplar: </label>
-                    <input type="number"  min="0" name="exemplar_id"><br>
-                </div>
-                <div class="form-field" class = "form-reserva">
-                    <input type="submit" value="Devolver"><br>
-                </div>   
-            </form>
-            <div id="msg-area-devolucao"></div>
-
-        </div>
-        <br>
-        <div class="caixinha">
-            <h2>Criar usuário</h2>
-            <form id="form-usuario"
-                hx-post="{% url 'criar_usuario' %}"
-                hx-target="#msg-area-usuario"
-                hx-swap="innerHTML">
-                {% csrf_token %}
-                <div class="form-field" >
-            
-                    <label for="nome_completo">Nome completo:</label>     
-                    <input type="text" name="nome"><br>
-                </div>
-
-                <div class="form-field">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email"><br>
-                </div>
-                <div class="form-field" class = "form-reserva">
-                    <input type="submit" value="Criar usuário"><br>
-                </div>   
-            </form>
-            <div id="msg-area-usuario"></div>
-        </div>
-        <br><br>
-
-    </div>
-
-    
-</div>
     
 </body>
 </html>

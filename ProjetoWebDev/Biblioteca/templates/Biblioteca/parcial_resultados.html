@@ -32,11 +32,14 @@
             <li>Sinopse: {{ elemento.sinopse }}</li>
         </ul>
     </div>
+
     <br><br>
         
         {% empty %}
             Nenhum livro encontrado
+            
     {% endfor %}
+
 {% else %}
 
 {% for elemento in lista %}

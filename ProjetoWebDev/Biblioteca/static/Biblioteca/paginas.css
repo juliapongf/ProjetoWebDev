@@ -1,4 +1,5 @@
 body{
+    /* Colocando imagem de fundo*/
     background-image: url('./bookshelf.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -6,16 +7,18 @@ body{
     background-position: center center;
 }
 
-/* Default style for desktop (larger screens) */
 .topbar {
+    /* Barra de navegação */
     display: flex;
-    justify-content: space-between; /* Distribute buttons equally */
-    align-items: center; /* Vertically center the buttons */
-    width: 100%; /* Full width */
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%;
 }
 
 .topbar_button {
-    flex: 1; /* Make each button take up equal width */
+
+    /* Botões da barra de navegação */
+    flex: 1;
     font-size: 1.5rem;
     padding: 15px 30px;
     background-color: black;
@@ -25,42 +28,45 @@ body{
 }
 
 .topbar_button a {
+    /* Estilizando os links dos botões */
     text-decoration: none;
     color: white;
-    display: block; /* Make the <a> tag fill the button */
-    height: 100%; /* Ensures the <a> tag fills the button vertically */
+    display: block;
+    height: 100%;
 }
 
 button:hover {
+    /* Cor do botão ao passar o mouse */
     background-color: #721c24;
 }
 
-/* Mobile-specific styles */
+/* Responsividade da barra de navegação */
 @media (max-width: 799px) {
     .topbar {
-        flex-direction: column; /* Stack the buttons vertically */
+        flex-direction: column; /*quando em telas menores, dispor botões verticalmente*/
         padding-bottom: 20px    ;
     }
 
     .topbar_button {
-        width: 100%; /* Make each button full width */
-        font-size: 1.2rem; /* Smaller font for mobile screens */
-        padding: 12px 20px; /* Adjust padding for mobile */
+        width: 100%;
+        font-size: 1.2rem; 
+        padding: 12px 20px;
     }
 }
 
-/* Tablet/desktop styles */
 @media (min-width: 800px) {
     .topbar {
-        flex-direction: row; /* Keep buttons in a row (default) */
+        flex-direction: row; /* Em telas maiores, botões dispostos horizontalmente*/
     }
 
     .topbar_button {
-        font-size: 1.5rem; /* Larger font for tablet/desktop */
-        padding: 15px 30px; /* Original padding */
+        font-size: 1.5rem; 
+        padding: 15px 30px;
     }
 }
 
+
+/* Estilos do cabeçalho */
 #cabecalho{
     text-align: center;
     border: 3px ridge rgb(55, 55, 55);
@@ -84,8 +90,9 @@ button:hover {
     color: black;
 }
 
+/* Estilos da caixa maior */
 .caixa{
-    border-radius: 30px;
+    border-radius: 30px; /* Bordas arredondadas */
     background-color: rgba(255, 255, 255, 0.75);
     margin: 20px auto;
     padding: 10px;
@@ -102,6 +109,8 @@ button:hover {
     }
 }
 
+/* Estilos da caixa menor */
+
 .caixinha{
     margin: 10px auto;
     padding: 10px;
@@ -110,9 +119,9 @@ button:hover {
     text-align: left;
 
     display: flex;
-    flex-direction: column; /* Garante que os elementos fiquem em coluna */
-    align-items: center; /* Alinha os itens no centro horizontalmente */
-    justify-content: center; /* Garante o alinhamento central verticalmente */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     }
 
 @media (min-width: 800px) {
@@ -126,6 +135,7 @@ button:hover {
     }
 }
 
+/* Estilos das caixinhas ainda menores com os resultados de cada livro e cada autor pesquisado*/
 .caixinha2{
     margin: 10px auto;
     padding: 10px;
@@ -146,12 +156,6 @@ button:hover {
     }
 }
 
-#form-pesquisa{
-    display: flex;
-    flex-direction: column; /* Garante que os elementos fiquem em coluna */
-    align-items: center; /* Alinha os itens no centro horizontalmente */
-    justify-content: center; /* Garante o alinhamento central verticalmente */
-}
 
 h1, h2{
     text-align: center;
@@ -166,11 +170,16 @@ h1, h2{
     font-size: 14px;
 }
 
-#submit{
+/*Estilos dos formulários*/
+
+/* Estilo do formulário de pesquisa*/
+#form-pesquisa{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
 }
 
-        /*css relacionado a reservas*/
 .form-container {
     display: flex;
     flex-direction: column; /* Stacks items vertically */
@@ -227,6 +236,10 @@ h1, h2{
 .form-field label{
     width: 100%;
     }
+}
+
+.submit{
+    justify-content: center;
 }
 
 
