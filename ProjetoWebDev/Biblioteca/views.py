@@ -23,9 +23,21 @@ def criar_livro(request):
         biografia = request.POST.get("biografia")
         biografias_novas = biografia.split('/')
 
+        if not titulo:
+                #return HttpResponse("ID do exemplar não informado", status=400)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Título não informado."
+                })
+        if not ano:
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Ano não informado."
+                })
+
         livro_existe = Livro.objects.filter(titulo=titulo).first()
         if livro_existe:
-            return HttpResponse("O livro já existe.")
+            return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Este livro já está adicionado ao acervo."
+            })
         else:
             livro = Livro(titulo=titulo, genero=genero, sinopse=sinopse, ano_de_publicacao=ano, exemplares_disponiveis=0)
             livro.save()
@@ -46,19 +58,43 @@ def criar_livro(request):
         livros = Livro.objects.all()
         autores = Autor.objects.all()
         autorias = Autoria.objects.all()
-        return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
+
+        #return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
+        return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Livro adicionado ao acervo com sucesso!"
+             })
 
     return HttpResponse("NADA FOI CRIADO.")
 
 def criar_exemplar(request):
     if request.method == "POST":
-        livro = Livro.objects.get(titulo__icontains=request.POST.get("titulo"))
+        # Checa se o campo título foi preenchido
+        titulo = request.POST.get("titulo")
+        if not titulo:
+            return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Título não informado."
+            })
+
+        # Caso título não corresponder a nenhum livro do acervo
+        try:
+            livro = Livro.objects.get(titulo__icontains=request.POST.get("titulo"))
+        except Livro.DoesNotExist:
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Não há livro com este título no acervo."
+            })
+    
+
         exemplar = Exemplar(livro=livro, disponivel=True)
         livro.exemplares_disponiveis += 1
         livro.save()
         exemplar.save()
         exemplares = Exemplar.objects.all()
-        return render(request, "Biblioteca/div_exemplares.html", {"exemplares": exemplares})
+
+        #return render(request, "Biblioteca/div_exemplares.html", {"exemplares": exemplares})
+        if exemplar:
+            return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Exemplar criado com sucesso!"
+            })
 
     return HttpResponse("NADA FOI CRIADO.")
 
@@ -70,15 +106,25 @@ def remover_livro(request):
             titulo = parsed.get("titulo", [None])[0]
 
             if not titulo:
-                return HttpResponse("Título não informado", status=400)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Título não informado."
+            })
 
+            
             livro = Livro.objects.get(titulo__icontains=titulo)
             livro.delete()
 
-            return render(request, "Biblioteca/div_remover_livros.html", {'removeu': True, 'livro': livro})
-
+            
+            #return render(request, "Biblioteca/div_remover_livros.html", {'removeu': True, 'livro': livro})
+            return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Livro removido com sucesso!"
+            })
+        
         except Livro.DoesNotExist:
-            return HttpResponse("Livro não encontrado", status=404)
+            #return HttpResponse("Livro não encontrado", status=404) #mudar p livro n encontrado
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Livro não encontrado no acervo."
+            })
     else:
         return HttpResponse("Método inválido", status=405)
 
@@ -90,7 +136,9 @@ def remover_exemplar(request):
             id_exemplar = parsed.get("id_exemplar", [None])[0]
 
             if not id_exemplar:
-                return HttpResponse("ID não informado", status=400)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "ID do exemplar não informado."
+            })
 
             exemplar = Exemplar.objects.get(id=id_exemplar)
 
@@ -102,10 +150,16 @@ def remover_exemplar(request):
 
             exemplar.delete()
 
-            return render(request, "Biblioteca/div_remover_exemplares.html", {'removeu': True, 'exemplar': exemplar})
-
+            #return render(request, "Biblioteca/div_remover_exemplares.html", {'removeu': True, 'exemplar': exemplar})
+            return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Exemplar deletado com sucesso!"
+             })
+        
         except Exemplar.DoesNotExist:
-            return HttpResponse("Exemplar não encontrado", status=404)
+            #return HttpResponse("Exemplar não encontrado", status=404)
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Exemplar não encontrado."
+             })
 
     return HttpResponse("Método inválido", status=405)
 
@@ -127,7 +181,15 @@ def atualizar_livro(request):
             biografia = parsed.get("biografia", [None])[0]
             biografias_novas = biografia.split('/') if biografia else []
 
-            # Atualizando o livro
+            #Verificar se os campos livro id e titulo foram preenchidos
+            if not id:
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "ID do Livro não informado."
+             })
+            #acho que no caso de não querer atualizar o título n faz sentido  esse teste de titulo
+             #if not titulo:return render(request, "Biblioteca/partials/msg_warning.html", {"mensagem": "Título não informado."})  
+
+            # Atualizando o livro 
             livro = Livro.objects.filter(id=id).first()
             if livro:
                 if titulo:
@@ -140,7 +202,10 @@ def atualizar_livro(request):
                     livro.ano_de_publicacao = ano
                 livro.save()
             else:
-                return HttpResponse("O livro não existe", status=404)
+                #return HttpResponse("O livro não existe", status=404)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Este livro não faz parte do acervo. Adicione-o antes de atualizar"
+             })
 
             # Atualizando os autores
             i = 0
@@ -158,17 +223,18 @@ def atualizar_livro(request):
                     autoria.save()
                 i += 1
 
-            # Retornando os dados atualizados
-            livros = Livro.objects.all()
-            autores = Autor.objects.all()
-            autorias = Autoria.objects.all()
 
-            return render(request, "Biblioteca/divteste.html", {
-                "livros": livros, "autores": autores, "autorias": autorias
-            })
+            #return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
+            return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Livro atualizado com sucesso!"
+             })
 
         except Exception as e:
-            return HttpResponse(f"Erro ao atualizar livro: {e}", status=500)
+            #return HttpResponse(f"Erro ao atualizar livro: {e}", status=500)
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Erro ao atualizar livro."
+             })
+        
 
     return HttpResponse("NADA FOI ATUALIZADO.", status=400)
 
@@ -196,6 +262,19 @@ def pesquisar(request):
 def criar_reserva(request):
     if request.method == "POST":
 
+        # Testa se campos foram preenchidos
+        nome = request.POST.get("nome")
+        exemplar_id = request.POST.get("exemplar") 
+
+        if not nome:
+            return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Nome de usuário não informado."
+            })
+
+        if not exemplar_id:
+            return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "ID  do exemplar não informado."
+            })
         # Tenta carregar usuário 
         try:
             usuario = Usuario.objects.get(nome__icontains=request.POST.get("nome"))
@@ -203,7 +282,7 @@ def criar_reserva(request):
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Usuário não encontrado."
             })
-        # Tenta carrega exemplar 
+        # Tenta carregar exemplar
         try:
             exemplar = Exemplar.objects.get(id__icontains=request.POST.get("exemplar"))
         except Exemplar.DoesNotExist:
@@ -211,18 +290,19 @@ def criar_reserva(request):
                 "mensagem": "Exemplar não encontrado."
             })
 
+        # Caso exemplar não disponível
         if exemplar.disponivel == False:
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Exemplar não disponível."
             })
 
-        # Verifica se já tem reserva
+        # Caso reserva repetida
         if Reserva.objects.filter(exemplar=exemplar).exists():
             return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Esta reserva já foi realizada."
             })
         
-        # Cria a reserva
+        # Criação da reserva
         reserva = Reserva(usuario=usuario, exemplar=exemplar)
         reserva.save()
         exemplar.disponivel = False
@@ -246,26 +326,31 @@ def remover_reserva(request):
 
             exemplar_id = parsed.get("exemplar_id", [None])[0]
 
-            # Tenta pegar nome do usuário
+            #tenta pegar nome do usuário
             nome = parsed.get("nome", [None])[0]
 
+
+            if not nome:
+                #return HttpResponse("ID do exemplar não informado", status=400)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Nome de usuário não informado."
+                })
+            
             if not exemplar_id:
+                #return HttpResponse("ID do exemplar não informado", status=400)
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "ID do exemplar não informado."
                 })
-            if not nome:
-                return render(request, "Biblioteca/partials/msg_warning.html", {
-                "mensagem": "Nome do usuário não informado."
-                })
+
 
             # Pega o exemplar
             exemplar = Exemplar.objects.get(id=exemplar_id)
 
-            # Verfica usuário
+            #Verfica usuario
             usuario = Usuario.objects.get(nome=nome)
 
-            # Verifica se o usuário tem reserva
-            reserva = Reserva.objects.get(exemplar=exemplar, usuario__nome=nome)
+            # Verifica se ele tem reserva
+            reserva = Reserva.objects.get(exemplar=exemplar,usuario__nome=nome)
             
 
             # Remove a reserva
@@ -281,18 +366,20 @@ def remover_reserva(request):
             return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Reserva removida com sucesso!"
             })
-
-        except Exemplar.DoesNotExist:
-            return render(request, "Biblioteca/partials/msg_error.html", {
-                "mensagem": "Exemplar não encontrado."
-            })
+        
         except Usuario.DoesNotExist:
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Usuário não cadastrado."
             })
 
+        except Exemplar.DoesNotExist:
+            #return HttpResponse("Exemplar não encontrado", status=404)
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Exemplar não encontrado."
+            })
 
         except Reserva.DoesNotExist:
+            #return HttpResponse("Nenhuma reserva encontrada para este exemplar", status=404)
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Reserva não encontrada."
             })
@@ -301,10 +388,31 @@ def remover_reserva(request):
 
 def criar_usuario(request):
     if request.method == "POST":
+
         nome =request.POST.get("nome")
         email =request.POST.get("email")
+
+        if not nome:
+                #return HttpResponse("ID do exemplar não informado", status=400)
+                return render(request, "Biblioteca/partials/msg_warning.html", {
+                "mensagem": "Nome de usuário não informado."
+                })
+        
+        if Usuario.objects.filter(nome=nome).exists():
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "Nome de usuário já cadastrado."
+            })
+        
+        if Usuario.objects.filter(email=email).exists():
+            return render(request, "Biblioteca/partials/msg_error.html", {
+                "mensagem": "E-mail já cadastrado."
+            })
+
         usuario = Usuario(nome=nome, email=email)
         usuario.save()
-        return HttpResponse("Usuário criado com sucesso.")
+        #return HttpResponse("Usuário criado com sucesso.")
+        return render(request, "Biblioteca/partials/msg_success.html", {
+                "mensagem": "Usuário criado com sucesso!"
+            })
 
     return HttpResponse("NADA FOI CRIADO.")
