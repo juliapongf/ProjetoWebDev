@@ -1,11 +1,70 @@
 body{
-    background-color: #f2d388;
+    background-image: url('./bookshelf.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+}
+
+/* Default style for desktop (larger screens) */
+.topbar {
+    display: flex;
+    justify-content: space-between; /* Distribute buttons equally */
+    align-items: center; /* Vertically center the buttons */
+    width: 100%; /* Full width */
+}
+
+.topbar_button {
+    flex: 1; /* Make each button take up equal width */
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.topbar_button a {
+    text-decoration: none;
+    color: white;
+    display: block; /* Make the <a> tag fill the button */
+    height: 100%; /* Ensures the <a> tag fills the button vertically */
+}
+
+button:hover {
+    background-color: #721c24;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 799px) {
+    .topbar {
+        flex-direction: column; /* Stack the buttons vertically */
+        padding-bottom: 20px    ;
+    }
+
+    .topbar_button {
+        width: 100%; /* Make each button full width */
+        font-size: 1.2rem; /* Smaller font for mobile screens */
+        padding: 12px 20px; /* Adjust padding for mobile */
+    }
+}
+
+/* Tablet/desktop styles */
+@media (min-width: 800px) {
+    .topbar {
+        flex-direction: row; /* Keep buttons in a row (default) */
+    }
+
+    .topbar_button {
+        font-size: 1.5rem; /* Larger font for tablet/desktop */
+        padding: 15px 30px; /* Original padding */
+    }
 }
 
 #cabecalho{
     text-align: center;
     border: 3px ridge rgb(55, 55, 55);
-    background-color: #d194a1;
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
 @media (min-width: 800px) {
@@ -21,9 +80,13 @@ body{
     }
 }
 
+#cabecalho h1 {
+    color: black;
+}
+
 .caixa{
     border-radius: 30px;
-    background-color: #e6d1ca;
+    background-color: rgba(255, 255, 255, 0.75);
     margin: 20px auto;
     padding: 10px;
 }
@@ -83,8 +146,16 @@ body{
     }
 }
 
+#form-pesquisa{
+    display: flex;
+    flex-direction: column; /* Garante que os elementos fiquem em coluna */
+    align-items: center; /* Alinha os itens no centro horizontalmente */
+    justify-content: center; /* Garante o alinhamento central verticalmente */
+}
+
 h1, h2{
     text-align: center;
+    color: #580009;
 }
 
 #instrucoes h3{
@@ -121,6 +192,10 @@ h1, h2{
     align-items: center; /* Aligns label and input vertically */
     margin-bottom: 10px; /* Adds space between fields */
     }
+}
+
+.form-field label {
+    font-family:Arial, Helvetica, sans-serif
 }
 
 @media (min-width: 800px) {

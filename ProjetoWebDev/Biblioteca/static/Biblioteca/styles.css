@@ -1,5 +1,9 @@
 body{
-    background-color: #f2d388;
+    background-image: url('./library.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
 }
 
 header {
@@ -10,25 +14,28 @@ header {
         height: 100vh;
     }
 
-    #cabecalho h1 {
-        font-size: 3rem;
+    #cabecalho {
+        background-color: rgba(255, 255, 255, 0.75);
+        font-size: 2rem;
         text-align: center;
+        padding: 20px;
+        border-radius: 8px;
     }
 
     .button-container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         gap: 20px;
     }
 
     .index_button {
         font-size: 1.5rem;
         padding: 15px 30px;
-        background-color: #d194a1;;
+        background-color: black;
         color: white;
         border: none;
         border-radius: 8px;
-        cursor: pointer;
         text-align: center;
     }
 

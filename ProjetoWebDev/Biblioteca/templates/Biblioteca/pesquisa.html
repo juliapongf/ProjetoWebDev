@@ -26,32 +26,37 @@
             <h1>📚 Biblioteca 📖</h1>
         </div>
 
-        <nav>
-            <a href="http://127.0.0.1:8000/biblioteca/">Início</a>
-            <a href="http://127.0.0.1:8000/biblioteca/pesquisa">Pesquisar</a>
-            <a href="http://127.0.0.1:8000/biblioteca/gerenciar">Gerenciar</a>
-        </nav>
+        <div class="topbar">
+            <button class="topbar_button"> <a href="http://127.0.0.1:8000/biblioteca/">Início</a> </button>
+            <button class="topbar_button"> <a href="http://127.0.0.1:8000/biblioteca/pesquisa">Pesquisar</a> </button>
+            <button class="topbar_button"> <a href="http://127.0.0.1:8000/biblioteca/gerenciar">Gerenciar</a> </button>
+        </div>
 
 </header>
 
 <div id="principal">
     <div class="caixa" id="pesquisa">
         <h1>Pesquisar livro ou autor</h1>
-        <form method="GET"
-            hx-get="{% url 'pesquisar' %}"
-            hx-target="#resultados"
-            hx-swap="innerHTML"
-            hx-trigger="submit"
-            >
-            <input type="text" placeholder="Faça sua pesquisa" name="busca">
-            <button type="submit">Pesquisar</button>
-            <br>
-            <input type="radio" name="tipodapesquisa" value="livro" checked> Livro
-            <input type="radio" name="tipodapesquisa" value="autor"> Autor
-        </form>
+        <div id="form-pesquisa">
+            <form method="GET"
+                hx-get="{% url 'pesquisar' %}"
+                hx-target="#resultados"
+                hx-swap="innerHTML"
+                hx-trigger="submit"
+                >
+                <input type="text" placeholder="Faça sua pesquisa" name="busca">
+                <button type="submit">Pesquisar</button>
+                <br>
+                <input type="radio" name="tipodapesquisa" value="livro" checked> Livro
+                <input type="radio" name="tipodapesquisa" value="autor"> Autor
+            </form>
 
-        <div id="resultados">
         </div>
+
+        <div id="resultados"></div>
+
+        <br>
+        
     </div>
     <br>
 
