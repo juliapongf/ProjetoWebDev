@@ -43,6 +43,13 @@
         <div class="caixinha">
             <h2>Obra</h2>
 
+            <div id="instrucoes">
+            <h3>Instruções</h3>
+            <p>Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula.</p>
+            <p>Biografias - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem.</p>
+            <br>
+            </div>
+                
                 <form
                     method="POST"
                     hx-post="{% url 'criar_livro' %}"
@@ -70,13 +77,13 @@
                         <label for="sinopse">Sinopse:</label>     
                         <textarea maxlength="1024" name="sinopse"> </textarea><br>
                     </div>
-                    Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
+
                     <div class="form-field" >
             
                         <label for="autor">Autor:</label>     
                         <input type="text" name="autor"><br>
                     </div>
-                    Biografias - Digite as biografias dos autores, separadas por barra (/), na ordem em que os autores aparecem <br>
+            
                     <div class="form-field" >
             
                         <label for="biografia">Biografia do(s) Autor(es):</label>     
@@ -126,9 +133,10 @@
     <br>
 
     <div class="caixa">
+        <h1>Remover do Acervo</h1>
         <div class="caixinha">
-            <h1>Remover do Acervo</h1>
                 <h2>Obra</h2>
+                
 
                     <form
                         method="POST"
@@ -186,6 +194,15 @@
         <div class="caixinha">
             <h2>Obra</h2>
 
+            <div id="instrucoes">
+                <h3>Instruções</h3>
+                <p>Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula. </p>
+                <p>Biografias - Digite as biografias dos autores, separadas por barra (/),
+                na ordem em que os autores aparecem (se quiser atualizar a(s) biografia(s) do(s) auor(es),
+                é necessário colocar seu(s) nome(s) no campo de autor acima) </p>
+                <br>
+            </div>
+
                 <form
                     hx-put="{% url 'atualizar_livro' %}"
                     hx-target="#div_atualizacao"
@@ -217,24 +234,20 @@
                         <label for="sinopse">Sinopse:</label>     
                         <textarea maxlength="1024" name="sinopse"> </textarea><br>
                     </div>
-                    Autor(es) - Digite os nomes dos autores, separados por vírgula, sem espaço após a vírgula <br>
                     <div class="form-field" >
             
                         <label for="autor">Autor:</label>     
                         <input type="text" name="autor"><br>
                     </div>
-                    Biografias - Digite as biografias dos autores, separadas por barra (/),
-                    na ordem em que os autores aparecem (se quiser atualizar a(s) biografia(s) do(s) auor(es),
-                    é necessário colocar seu(s) nome(s) no campo de autor acima)<br>
                     <div class="form-field" >
             
                         <label for="biografia">Biografia do(s) Autor(es):</label>     
                         <textarea maxlength="1024" name="biografia"> </textarea><br>
                     </div>
 
-                    <div class="form-field">
+                    <div class="form-field" id="submit">
                     <input type="submit" value="Atualizar"><br>
-                </div> 
+                    </div> 
                 </form>
 
             <div id="div_atualizacao"></div>
