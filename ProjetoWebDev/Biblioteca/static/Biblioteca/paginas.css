@@ -1,11 +1,22 @@
-#cabecalho {
+body{
+    background-color: #f2d388;
+}
+@media (min-width: 800px) {
+#cabecalho{
     text-align: center;
     border: 3px ridge rgb(55, 55, 55);
     font-size: 40px;
     background-color: #d194a1;
+    }
 }
-body{
-    background-color: #f2d388;
+
+@media (max-width: 799px) {
+#cabecalho{
+    text-align: center;
+    border: 3px ridge rgb(55, 55, 55);
+    font-size: 5vw;
+    background-color: #d194a1;
+    }
 }
 
 @media (min-width: 800px) {
@@ -21,13 +32,14 @@ body{
 .caixa{
     border-radius: 10px;
     text-align: center;
-    background-color: white;
+    background-color: #e6d1ca;
     width: 90%;
     margin: 20px auto;
     padding: 10px;
     }
 }
 
+@media (min-width: 800px) {
 .caixinha{
     margin: 10px auto;
     padding: 10px;
@@ -35,7 +47,20 @@ body{
     border: 5px ridge #721c24;
     width: 80%;
     text-align: left;
+    }
 }
+@media (max-width: 799px) {
+.caixinha{
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fcf7f3;
+    border: 5px ridge #721c24;
+    width: 90%;
+    text-align: left;
+    }
+}
+
+@media (min-width: 800px) {
 .caixinha2{
     margin: 10px auto;
     padding: 10px;
@@ -43,6 +68,17 @@ body{
     border: 5px ridge #721c24;
     width: 80%;
     text-align: left;
+    }
+}
+@media (max-width: 799px) {
+.caixinha2{
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 5px ridge #721c24;
+    width: 90%;
+    text-align: left;
+    }
 }
 
 h1, h2{
@@ -57,10 +93,20 @@ h1, h2{
     justify-content: center; /* Centers items vertically on the main-axis (if height is defined) */
 }
 
-.form-field {
+@media (min-width: 800px) {
+.form-field{
     display: flex;
     align-items: center; /* Aligns label and input vertically */
     margin-bottom: 10px; /* Adds space between fields */
+    }
+}
+@media (max-width: 799px) {
+.form-field{
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Aligns label and input vertically */
+    margin-bottom: 10px; /* Adds space between fields */
+    }
 }
 
 .form-field label {
