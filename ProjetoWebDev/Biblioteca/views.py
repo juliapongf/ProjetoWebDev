@@ -24,7 +24,6 @@ def criar_livro(request):
         biografias_novas = biografia.split('/')
 
         if not titulo:
-                #return HttpResponse("ID do exemplar não informado", status=400)
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Título não informado."
                 })
@@ -54,12 +53,7 @@ def criar_livro(request):
             autoria = Autoria(livro=livro, autor=autor_novo)
             autoria.save()
 
-        
-        livros = Livro.objects.all()
-        autores = Autor.objects.all()
-        autorias = Autoria.objects.all()
 
-        #return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
         return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Livro adicionado ao acervo com sucesso!"
              })
@@ -68,6 +62,7 @@ def criar_livro(request):
 
 def criar_exemplar(request):
     if request.method == "POST":
+
         # Checa se o campo título foi preenchido
         titulo = request.POST.get("titulo")
         if not titulo:
@@ -88,9 +83,7 @@ def criar_exemplar(request):
         livro.exemplares_disponiveis += 1
         livro.save()
         exemplar.save()
-        exemplares = Exemplar.objects.all()
 
-        #return render(request, "Biblioteca/div_exemplares.html", {"exemplares": exemplares})
         if exemplar:
             return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Exemplar criado com sucesso!"
@@ -109,19 +102,15 @@ def remover_livro(request):
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Título não informado."
             })
-
-            
+  
             livro = Livro.objects.get(titulo__icontains=titulo)
             livro.delete()
 
-            
-            #return render(request, "Biblioteca/div_remover_livros.html", {'removeu': True, 'livro': livro})
             return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Livro removido com sucesso!"
             })
         
         except Livro.DoesNotExist:
-            #return HttpResponse("Livro não encontrado", status=404) #mudar p livro n encontrado
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Livro não encontrado no acervo."
             })
@@ -150,13 +139,11 @@ def remover_exemplar(request):
 
             exemplar.delete()
 
-            #return render(request, "Biblioteca/div_remover_exemplares.html", {'removeu': True, 'exemplar': exemplar})
             return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Exemplar deletado com sucesso!"
              })
         
         except Exemplar.DoesNotExist:
-            #return HttpResponse("Exemplar não encontrado", status=404)
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Exemplar não encontrado."
              })
@@ -186,9 +173,7 @@ def atualizar_livro(request):
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "ID do Livro não informado."
              })
-            #acho que no caso de não querer atualizar o título n faz sentido  esse teste de titulo
-             #if not titulo:return render(request, "Biblioteca/partials/msg_warning.html", {"mensagem": "Título não informado."})  
-
+            
             # Atualizando o livro 
             livro = Livro.objects.filter(id=id).first()
             if livro:
@@ -202,7 +187,6 @@ def atualizar_livro(request):
                     livro.ano_de_publicacao = ano
                 livro.save()
             else:
-                #return HttpResponse("O livro não existe", status=404)
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Este livro não faz parte do acervo. Adicione-o antes de atualizar"
              })
@@ -223,14 +207,11 @@ def atualizar_livro(request):
                     autoria.save()
                 i += 1
 
-
-            #return render(request, "Biblioteca/divteste.html", {"livros": livros, "autores": autores, "autorias": autorias})
             return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Livro atualizado com sucesso!"
              })
 
         except Exception as e:
-            #return HttpResponse(f"Erro ao atualizar livro: {e}", status=500)
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Erro ao atualizar livro."
              })
@@ -331,13 +312,11 @@ def remover_reserva(request):
 
 
             if not nome:
-                #return HttpResponse("ID do exemplar não informado", status=400)
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Nome de usuário não informado."
                 })
             
             if not exemplar_id:
-                #return HttpResponse("ID do exemplar não informado", status=400)
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "ID do exemplar não informado."
                 })
@@ -373,13 +352,11 @@ def remover_reserva(request):
             })
 
         except Exemplar.DoesNotExist:
-            #return HttpResponse("Exemplar não encontrado", status=404)
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Exemplar não encontrado."
             })
 
         except Reserva.DoesNotExist:
-            #return HttpResponse("Nenhuma reserva encontrada para este exemplar", status=404)
             return render(request, "Biblioteca/partials/msg_error.html", {
                 "mensagem": "Reserva não encontrada."
             })
@@ -393,7 +370,6 @@ def criar_usuario(request):
         email =request.POST.get("email")
 
         if not nome:
-                #return HttpResponse("ID do exemplar não informado", status=400)
                 return render(request, "Biblioteca/partials/msg_warning.html", {
                 "mensagem": "Nome de usuário não informado."
                 })
@@ -410,7 +386,6 @@ def criar_usuario(request):
 
         usuario = Usuario(nome=nome, email=email)
         usuario.save()
-        #return HttpResponse("Usuário criado com sucesso.")
         return render(request, "Biblioteca/partials/msg_success.html", {
                 "mensagem": "Usuário criado com sucesso!"
             })

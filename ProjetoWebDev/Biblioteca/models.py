@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Livro (models.Model):
-    titulo = models.CharField(max_length=1000, unique=True) #Não sei se faz sentido um max_lenght aqui, apenas seguindo o exemplo da aula
+    titulo = models.CharField(max_length=1000, unique=True) 
     sinopse =  models.CharField(blank=True)
     ano_de_publicacao = models.IntegerField()
     genero = models.CharField(max_length=1000)
