@@ -4,6 +4,6 @@ Projeto de web app simples para o curso de desenvolvimento web "WebDev" do grupo
 Projeto: Sistema de gestão de biblioteca (acervo e reservas)
 
 Autores:
-> Fernando (ferdy545)
-> Giovanna (giovanna-op)
-> Júlia (juliapongf)
+- Fernando (ferdy545)
+- Giovanna (giovanna-op)
+- Júlia (juliapongf)
